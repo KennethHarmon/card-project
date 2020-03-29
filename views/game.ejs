@@ -1,0 +1,41 @@
+<%- include("partials/header") %>
+<input type="text" name="room" id="room" placeholder="name your lobby">
+<button id="connect">Connect</button>
+<br>
+<input type="text" name="message" id="message" placeholder="enter your message">
+<button id="private">Broadcast</button>
+<br>
+<button id="Start">Start Game</button>
+<script>
+    var socket = io();
+    var currentRoom = "";
+    var numOfUsers = 0;
+
+    //Join room when clicking connect
+    $("#connect").click(function(){
+      changeRoom();
+    })
+    
+    //Send message to current room
+    $("#private").click(function(){
+        var message = $("#message").val();
+        socket.emit("room message", {message: message, room:currentRoom})
+    })
+
+    function changeRoom() {
+        var room = $("input").val();
+        socket.emit("connect to room", {room: room}) 
+    }
+
+    socket.on("recieved", (data) => {
+        console.log(data);
+        console.log("Message : " + data.message + " to " + currentRoom + " room.")
+    })
+
+    socket.on("connectedRoom", (data) => {
+        console.log("User " + data.socket + " has connected to " + data.room + " room")
+        currentRoom = data.room;
+        numOfUsers++;
+    })
+</script>  
+<%- include("partials/footer") %>
