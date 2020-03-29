@@ -1,0 +1,7 @@
+{
+  "immed": true,
+  "node": true,
+  "trailing": true,
+  "undef": true,
+  "unused": true
+}

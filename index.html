@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO testing</title>
+    <script src="/socket.io/socket.io.js"></script> 
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> 
+  </head>
+  <body>
+    <input type="text" name="room" id="room">
+    <button id="connect">Connect</button>
+    <button id="private">Broadcast</button>
+    <script>
+        var socket = io();
+        var currentRoom = "";
+
+        $("#connect").click(function(){
+            changeRoom();
+        })
+
+        $("#private").click(function(){
+            var message = $("input").val();
+            socket.emit("room message", {message: message, room:currentRoom})
+        })
+
+        function changeRoom() {
+            var room = $("input").val();
+            socket.emit("connect to room", {room: room}) 
+        }
+
+        socket.on("recieved", (data) => {
+            console.log(data);
+            console.log("Message : " + data.message + " to " + currentRoom + " room.")
+        })
+
+        socket.on("connectedRoom", (data) => {
+            console.log("Conected to " + data.room + " room")
+            currentRoom = data.room;
+        })
+    </script>  
+  </body>
+</html>
