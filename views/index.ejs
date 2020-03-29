@@ -1,45 +1,14 @@
-<!doctype html>
-<html>
-  <head>
-    <title>Socket.IO testing</title>
-    <script src="/socket.io/socket.io.js"></script> 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> 
-  </head>
-  <body>
-    <input type="text" name="room" id="room" placeholder="name your lobby">
-    <button id="connect">Connect</button>
-    <br>
-    <input type="text" name="message" id="message" placeholder="enter your message">
-    <button id="private">Broadcast</button>
-    <script>
-        var socket = io();
-        var currentRoom = "";
-
-        //Join room when clicking connect
-        $("#connect").click(function(){
-            changeRoom();
-        })
-        
-        //Send message to current room
-        $("#private").click(function(){
-            var message = $("#message").val();
-            socket.emit("room message", {message: message, room:currentRoom})
-        })
-
-        function changeRoom() {
-            var room = $("input").val();
-            socket.emit("connect to room", {room: room}) 
-        }
-
-        socket.on("recieved", (data) => {
-            console.log(data);
-            console.log("Message : " + data.message + " to " + currentRoom + " room.")
-        })
-
-        socket.on("connectedRoom", (data) => {
-            console.log("Conected to " + data.room + " room")
-            currentRoom = data.room;
-        })
-    </script>  
-  </body>
-</html>
+<%- include("partials/header") %>
+<div class="container main">
+    <h1>Welcome!</h1>
+    <div class="row">
+        <input type="text" name="room" id="room" placeholder="name your lobby">
+        <button id="connect">Connect</button>
+        <br>
+        <input type="text" name="message" id="message" placeholder="enter your message">
+        <button id="private">Broadcast</button>
+        <br>
+        <button id="Start">Start Game</button>
+    </div>
+</div>
+<%- include("partials/footer") %>
