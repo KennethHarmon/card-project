@@ -1,3 +1,35 @@
-.main {
-    margin: 50px auto;
+body {
+    height: 1000px;
+}
+
+.tall {
+    height: 100%;
+}
+
+.main-button {
+    margin: 20% auto;
+}
+
+.main-title {
+    margin-top: 100px;
+    font-weight: bold;
+}
+
+.red {
+    color: #DC3546;
+}
+
+.black {
+    color: #343A40;
+}
+
+#mainleft {
+    background-color: #DC3546;
+    text-align: center;
+    padding: 50% auto;
+}
+
+#mainright {
+    background-color: #343A40;
+    text-align: center;
 }

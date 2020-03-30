@@ -1,14 +1,30 @@
 <%- include("partials/header") %>
-<div class="container main">
-    <h1>Welcome!</h1>
-    <div class="row">
-        <input type="text" name="room" id="room" placeholder="name your lobby">
-        <button id="connect">Connect</button>
-        <br>
-        <input type="text" name="message" id="message" placeholder="enter your message">
-        <button id="private">Broadcast</button>
-        <br>
-        <button id="Start">Start Game</button>
+<div class="container-fluid main tall">
+    <div class="row tall">
+        <div class="col-md-6 tall red" id="mainleft">
+            <h1 class="black display-1 main-title">Red</h1>
+            <button type="button" class="btn btn-light btn-lg main-button">Create Game</button>
+            <form action="/game/new" method="POST">
+                <div class="form-group">
+                    <input class="form-control" type="text" name = "username" placeholder="Enter username">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-lg  btn-secondary btn-block mt-3">Create Game</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6 tall black" id="mainright">
+            <h1 class="red display-1 main-title">Flags</h1>
+            <button type="button" class="btn btn-light btn-lg main-button">Join Game</button>
+            <form action="/game/new" method="POST">
+                <div class="form-group">
+                    <input class="form-control" type="text" name = "username" placeholder="Enter game code">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-lg  btn-secondary btn-block mt-3">Join Game</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 <%- include("partials/footer") %>

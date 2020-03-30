@@ -1,13 +1,23 @@
+///////////////////////////REQUIRES/////////////////////////////////
+
 var express = require('express');
 var app = express();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
-var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
+
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(express.static("public"));
+app.set("view engine", "ejs")
+
+///////////////////////////////////MONGOOSE SECTION//////////////////////////
+
+var mongoose = require("mongoose");
 mongoose.set('useUnifiedTopology', true);
 mongoose.set('useNewUrlParser', true);
 mongoose.connect("mongodb://localhost/demo")
 
+//Card schema
 var cardSchema = new mongoose.Schema({
   text: String,
   type: String
@@ -15,9 +25,25 @@ var cardSchema = new mongoose.Schema({
 
 var Card = mongoose.model("Card", cardSchema);
 
-app.use(bodyParser.urlencoded({extended: true}))
-app.use(express.static("public"));
-app.set("view engine", "ejs")
+//Lobby schema
+var lobbySchema = new mongoose.Schema({
+  Servername: String,
+  players: [],
+  password: String,
+  lobbyCode: String
+});
+
+var Lobby = mongoose.model("Lobby", lobbySchema);
+
+//Player Schema
+var playerSchema = new mongoose.Schema({
+  username: String,
+  ip: String
+})
+
+var Player = mongoose.model("Player", playerSchema)
+
+////////////////////////////////////////////PAGE ROUTES////////////////////////////////////////
 
 //Serve index page
 app.get('/', function(req, res){
@@ -27,7 +53,6 @@ app.get('/', function(req, res){
 //Serve cards page
 app.get('/cards', function(req, res){
   var cards = [];
-  console.log("Cards resonse 11")
   Card.find({}, function(err, cardsResponse){
     if(err) {
       console.log("Error retrieving cards from database");
@@ -41,9 +66,31 @@ app.get('/cards', function(req, res){
   })
 });
 
-//Serve index page
-app.get('/game', function(req, res){
-  res.render("game")
+//Serve game page
+app.get("/game", function(req,res) {
+  res.render("game", {username: req.query.username})
+})
+
+//Create a new game
+app.post('/game/new', function(req, res){
+  var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
+  var username = req.body.username.toLowerCase()
+
+  checkUserExists(username, function(existsResponse) {
+    if (existsResponse === 1) {
+      console.log("No user exists")
+      createPlayer(username, ip);
+      createLobby(username, ip, function(code) {
+        console.log("Code: " + code)
+        res.redirect("/game?username=" + username + "&lobbycode=" + code);
+      });
+    }
+    else {
+      console.log("User already exists, can't create lobby")
+      res.redirect("/");
+    }
+  })
+
 });
 
 //Serve index page
@@ -68,6 +115,8 @@ app.post("/cards", function(req,res) {
   res.redirect("/cards")
 });
 
+////////////////////////////////////////////////SOCKET.IO SECTION/////////////////////////////////////////
+
 //Once a socket has connected
 io.on('connection', function (socket) {
   console.log("user has connected: " + socket.id)
@@ -88,6 +137,89 @@ io.on('connection', function (socket) {
   });
 });
 
-http.listen(3000, function(){
+
+////////////////////////////////////////////////////Start Server + Catch All/////////////////////////////////////////
+app.get("*", function(req,res) {
+  res.send("Error, page not found");
+})
+
+http.listen(3000 ,function(){
   console.log('listening on *:3000');
 });
+
+///////////////////////////////////////////////////Functions/////////////////////////////////////////
+
+/////Returns: (2 = error, 1 = user exists, 0 = no user exists)
+function checkUserExists(username, callback) {
+  var response = Player.find({username: username}, function(err, playerResponse){
+  if(err) {
+    console.log("Error trying to get user data")
+  }
+  else if (playerResponse.length === 0){
+    callback(1);
+  }
+  else {
+    callback(0);
+  }
+})
+}
+
+//Create a player object with given username and ip and store it in the database
+function createPlayer(username,ip) {
+  var player = new Player({
+    username: username,
+    ip: ip
+  })
+
+  player.save(function(err,saved) {
+    if(err) {
+      console.log("error saving player")
+    }
+    else {
+      console.log("player saved")
+    }
+  })
+}
+
+//Create a lobby object with given username and ip and store it in the database
+function createLobby(username, ip, callback) {
+  //Create a new lobby
+  var lobbyCode = generateLobbyCode(function(code) {
+    var newLobby = new Lobby({
+      Servername: username + "'s Server",
+      players: [{username: username, ip: ip}],
+      lobbyCode: code
+    });
+  
+    newLobby.save(function(err, saved) {
+      if(err) {
+        console.log("Problem setting up a new lobby.")
+      }
+      else {
+        console.log("Setup new lobby: " + saved)
+      }
+    })
+
+    callback(code);
+  })
+}
+
+function generateLobbyCode(callback) {
+  var code = Math.floor(100000 + Math.random() * 900000);
+  Lobby.find({lobbyCode: code}, function(err, response) {
+    if(err) {
+      console.log("error generating lobby code")
+    }
+    else if(response.length == 0) {
+      console.log("no matching lobby code")
+      callback(code);
+    }
+    else {
+      console.log("Matching lobby codes!!!!!!!!!!! Generating new code");
+      var newcode = Math.floor(100000 + Math.random() * 900000);
+      callback(newcode);
+    }
+  })
+}
+
+
