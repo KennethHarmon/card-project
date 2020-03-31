@@ -1,14 +1,16 @@
 <%- include("partials/header") %>
-<div class="container">
-    <div class="row">
-        <h1>Viewing all cards:</h1>
+<div class="container pl-5">
+    <div class="row text-center mt-4">
+        <div class="col"><h1>Viewing all cards:</h1></div>
     </div>
     <div class="row">
-        <ul>
         <% cards.forEach(element => { %>
-            <li>Text: <%=element.text%> - Type: <%=element.type%> </li>
+            <% if (element.type === "white") {%> 
+                <div class="whitecard"><p><%=element.text%></p></div>
+            <% } else  {%>
+                <div class="redcard"><p><%=element.text%></p></div>
+            <% } %>   
         <% }); %> 
-        </ul>
     </div>
 </div>
 <%- include("partials/footer") %>

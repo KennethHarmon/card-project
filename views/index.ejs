@@ -3,8 +3,7 @@
     <div class="row tall">
         <div class="col-md-6 tall red" id="mainleft">
             <h1 class="black display-1 main-title">Red</h1>
-            <button type="button" class="btn btn-light btn-lg main-button">Create Game</button>
-            <form action="/game/new" method="POST">
+            <form action="/game/new" method="POST" class="mt-5">
                 <div class="form-group">
                     <input class="form-control" type="text" name = "username" placeholder="Enter username">
                     <div class="form-group">
@@ -15,14 +14,16 @@
         </div>
         <div class="col-md-6 tall black" id="mainright">
             <h1 class="red display-1 main-title">Flags</h1>
-            <button type="button" class="btn btn-light btn-lg main-button">Join Game</button>
-            <form action="/game/new" method="POST">
+            <form action="/game/join" method="POST" class="mt-5">
                 <div class="form-group">
-                    <input class="form-control" type="text" name = "username" placeholder="Enter game code">
+                    <input class="form-control" type="text" name = "username" placeholder="Enter Username">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name = "gameCode" placeholder="Enter game code">
+                </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-lg  btn-secondary btn-block mt-3">Join Game</button>
-                    </div>
-                </div>
+                    </div>      
             </form>
         </div>
     </div>

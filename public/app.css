@@ -23,6 +23,34 @@ body {
     color: #343A40;
 }
 
+.whitecard {
+    background-color: white;
+    width: 19%;
+    height: 300px;
+    border: 2px solid black;
+    padding: 2% 2%;
+    margin: 2.5% 0.5%;
+    color: #DC3546;
+    display: inline-block;
+    position: relative;
+    overflow-wrap: break-word;
+    vertical-align: top;
+}
+
+.redcard {
+    background-color: #DC3546;
+    width: 19%;
+    height: 300px;
+    border: 2px solid black;
+    padding: 2% 2%;
+    margin: 2.5% 0.5%;
+    color: white;
+    display: inline-block;
+    position: relative;
+    overflow-wrap: break-word;
+    vertical-align: top;
+}
+
 #mainleft {
     background-color: #DC3546;
     text-align: center;
@@ -33,3 +61,94 @@ body {
     background-color: #343A40;
     text-align: center;
 }
+
+@media only screen and (max-width: 972px) {
+    .whitecard {
+        background-color: white;
+        width: 30%;
+        height: 300px;
+        border: 2px solid black;
+        padding: 2% 2%;
+        margin: 5% auto;
+        color: #DC3546;
+        display: inline-block;
+        position: relative;
+        overflow-wrap: break-word;
+        vertical-align: top;
+    }
+    
+    .redcard {
+        background-color: #DC3546;
+        width: 30%;
+        height: 300px;
+        border: 2px solid black;
+        padding: 2% 2%;
+        margin: 5% auto;
+        color: white;
+        display: inline-block;
+        position: relative;
+        overflow-wrap: break-word;
+        vertical-align: top;
+    }
+  }
+
+
+@media only screen and (max-width: 768px) {
+    .whitecard {
+        background-color: white;
+        width: 40%;
+        height: 300px;
+        border: 2px solid black;
+        padding: 2% 2%;
+        margin: 5% auto;
+        color: #DC3546;
+        display: inline-block;
+        position: relative;
+        overflow-wrap: break-word;
+        vertical-align: top;
+    }
+    
+    .redcard {
+        background-color: #DC3546;
+        width: 40%;
+        height: 300px;
+        border: 2px solid black;
+        padding: 2% 2%;
+        margin: 5% auto;
+        color: white;
+        display: inline-block;
+        position: relative;
+        overflow-wrap: break-word;
+        vertical-align: top;
+    }
+  }
+
+  @media only screen and (max-width: 500px) {
+    .whitecard {
+        background-color: white;
+        width: 60%;
+        height: 300px;
+        border: 2px solid black;
+        padding: 2% 2%;
+        margin: 5% auto;
+        color: #DC3546;
+        display: inline-block;
+        position: relative;
+        overflow-wrap: break-word;
+        vertical-align: top;
+    }
+    
+    .redcard {
+        background-color: #DC3546;
+        width: 60%;
+        height: 300px;
+        border: 2px solid black;
+        padding: 2% 2%;
+        margin: 5% auto;
+        color: white;
+        display: inline-block;
+        position: relative;
+        overflow-wrap: break-word;
+        vertical-align: top;
+    }
+  }

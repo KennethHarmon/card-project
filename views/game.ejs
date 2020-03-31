@@ -1,28 +1,44 @@
 <%- include("partials/header") %>
-<input type="text" name="room" id="room" placeholder="name your lobby">
-<button id="connect">Connect</button>
-<br>
-<input type="text" name="message" id="message" placeholder="enter your message">
-<button id="private">Broadcast</button>
-<br>
-<button id="Start">Start Game</button>
 
- <p>Username: <%=username %> </p>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Game Code: <%=  lobbycode%> </h1>
+            <input type="text" name="message" id="message" placeholder="enter your message">
+            <button id="private">Broadcast</button>
+            <br>
+            <button id="Start">Start Game</button>
+            
+             <p>Username: <%=username %> </p>
+        </div>
+    </div>
+</div>
 
 <script>
     var socket = io();
     var currentRoom = "";
     var numOfUsers = 0;
-    console.log("Username: " + username)
-    console.log("Lobbycode: " + lobbycode)
-
-    socket.emit("connect to room", {room: lobbycode})
-
-    //Join room when clicking connect
-    $("#connect").click(function(){
-      changeRoom();
-    })
     
+    //Parse query headers in URL
+    function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    };
+    var username = getUrlParameter("username");
+    var lobbycode = getUrlParameter("lobbycode");
+
+    //Start
+    socket.emit("newUser", {username: username, lobbycode: lobbycode})
+    socket.emit("connect to room", {room: lobbycode})
+    
+
+    $("#Start").click(function(){
+        console.log("Start Game")
+        socket.emit("Start game")
+    });
+
     //Send message to current room
     $("#private").click(function(){
         var message = $("#message").val();
@@ -34,13 +50,12 @@
         socket.emit("connect to room", {room: room}) 
     }
 
-    socket.on("recieved", (data) => {
-        console.log(data);
+    socket.on("recievedmessage", (data) => {
         console.log("Message : " + data.message + " to " + currentRoom + " room.")
     })
 
     socket.on("connectedRoom", (data) => {
-        console.log("User " + data.socket + " has connected to " + data.room + " room")
+        console.log("User " + username + " has connected to " + data.room + " room")
         currentRoom = data.room;
         numOfUsers++;
     })

@@ -25,12 +25,20 @@ var cardSchema = new mongoose.Schema({
 
 var Card = mongoose.model("Card", cardSchema);
 
+//Hand Schema
+var handSchema = new mongoose.Schema({
+  username: String,
+  cards: [cardSchema]
+})
+var Hand = mongoose.model("Hand", handSchema)
+
 //Lobby schema
 var lobbySchema = new mongoose.Schema({
   Servername: String,
   players: [],
   password: String,
-  lobbyCode: String
+  lobbyCode: String,
+  hands: [handSchema]
 });
 
 var Lobby = mongoose.model("Lobby", lobbySchema);
@@ -50,31 +58,36 @@ app.get('/', function(req, res){
   res.render("index")
 });
 
-//Serve cards page
-app.get('/cards', function(req, res){
-  var cards = [];
-  Card.find({}, function(err, cardsResponse){
-    if(err) {
-      console.log("Error retrieving cards from database");
-    }
-    else {
-      cardsResponse.forEach(function(el) {
-        cards.push(el)
-      } )
-    }
-    res.render('cardview', {cards: cards})
-  })
-});
-
 //Serve game page
 app.get("/game", function(req,res) {
-  res.render("game", {username: req.query.username})
+  res.render("game", {username: req.query.username, lobbycode: req.query.lobbycode})
+})
+
+app.post("/game/join", function(req,res) {
+  var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
+  console.log(req.body.username)
+  var username = req.body.username.toLowerCase();
+  var gameCode = req.body.gameCode;
+
+  checkUserExists(username, function(existsResponse) {
+    if (existsResponse === 1) {
+      console.log("No user exists")
+      createPlayer(username, ip);
+      addToLobby(username,gameCode);
+      res.redirect("/game?username=" + username + "&lobbycode=" + gameCode);
+    }
+    else {
+      console.log("User already exists, can't join lobby")
+      res.redirect("/");
+    }
+  });
+
 })
 
 //Create a new game
 app.post('/game/new', function(req, res){
   var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
-  var username = req.body.username.toLowerCase()
+  var username = req.body.username.toLowerCase();
 
   checkUserExists(username, function(existsResponse) {
     if (existsResponse === 1) {
@@ -89,8 +102,24 @@ app.post('/game/new', function(req, res){
       console.log("User already exists, can't create lobby")
       res.redirect("/");
     }
-  })
+  });
 
+});
+
+//Serve cards page
+app.get('/cards', function(req, res){
+  var cards = [];
+  Card.find({}, function(err, cardsResponse){
+    if(err) {
+      console.log("Error retrieving cards from database");
+    }
+    else {
+      cardsResponse.forEach(function(el) {
+        cards.push(el)
+      } )
+    }
+    res.render('cardview', {cards: cards})
+  })
 });
 
 //Serve index page
@@ -121,6 +150,13 @@ app.post("/cards", function(req,res) {
 io.on('connection', function (socket) {
   console.log("user has connected: " + socket.id)
 
+  socket.on("newUser", function(data) {
+    socket.username = data.username;
+    socket.lobbycode = data.lobbycode;
+    console.log("Socket Username: " + socket.username);
+    console.log("Socket LobbyCode: " + socket.lobbycode)
+  })
+
   //User has tried connect to room => data.room
   socket.on("connect to room", function(data){
     console.log('User trying to connect to room ' + data.room);
@@ -130,10 +166,23 @@ io.on('connection', function (socket) {
     io.to(data.room).emit("connectedRoom", { room: data.room, socket: socket.id});
   });
 
+  socket.on("Start game", function() {
+    console.log("Game started in room: " + socket.lobbycode + " by " + socket.username)
+    io.to(socket.lobbycode).emit("StartGame", {lobbycode:socket.lobbycode, username: socket.username})
+  })
+
   //When a client tries to broadcast a messge to their room
   socket.on("room message", function(data){
     console.log(data);
-    io.to(data.room).emit("recieved", { message: data.message});
+    io.to(socket.lobbycode).emit("recievedmessage", { message: data.message});
+  });
+
+  socket.on('disconnect', function () {
+    var connectionMessage = socket.username + " Disconnected from Socket " + socket.id;
+    console.log(connectionMessage);
+    removePlayer(socket.username);
+    removeFromServer(socket.username, socket.lobbycode);
+    checkForEmptyServer();
   });
 });
 
@@ -184,10 +233,10 @@ function createPlayer(username,ip) {
 //Create a lobby object with given username and ip and store it in the database
 function createLobby(username, ip, callback) {
   //Create a new lobby
-  var lobbyCode = generateLobbyCode(function(code) {
+  generateLobbyCode(function(code) {
     var newLobby = new Lobby({
       Servername: username + "'s Server",
-      players: [{username: username, ip: ip}],
+      players: [username],
       lobbyCode: code
     });
   
@@ -196,7 +245,7 @@ function createLobby(username, ip, callback) {
         console.log("Problem setting up a new lobby.")
       }
       else {
-        console.log("Setup new lobby: " + saved)
+        console.log("Setup new lobby")
       }
     })
 
@@ -219,6 +268,49 @@ function generateLobbyCode(callback) {
       var newcode = Math.floor(100000 + Math.random() * 900000);
       callback(newcode);
     }
+  })
+}
+
+function removePlayer(username) {
+  Player.deleteOne({"username":username}, function (err) {
+    if(err) console.log(err);
+    console.log("Successful deletion");
+  })
+}
+
+function removeFromServer(username,lobbycode) {
+  console.log("removing: " + username)
+
+  Lobby.find({lobbyCode: lobbycode}, function (err, response) {
+    var Servername = response.Servername;
+    console.log(response)
+    var index = response[0].players.indexOf(username);
+    response[0].players.splice(index,1);
+    Lobby.updateOne({lobbyCode: lobbycode}, {$set: {"players":response[0].players}}, function(err,response) {
+      if(err) {
+        console.log(err)
+      }
+    })
+  })
+}
+
+function checkForEmptyServer() {
+  Lobby.deleteMany({"players":{$size: 0}}, function(err, response) {
+    if (err) console.log("err");
+    console.log("empty server found")
+  })
+}
+
+function addToLobby(username,gameCode) {
+  Lobby.find({lobbyCode: gameCode}, function (err, response) {
+    var Servername = response.Servername;
+    console.log(response)
+    response[0].players.push(username);
+    Lobby.updateOne({lobbyCode: gameCode}, {$set: {"players":response[0].players}}, function(err,response) {
+      if(err) {
+        console.log(err)
+      }
+    })
   })
 }
 
