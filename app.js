@@ -5,6 +5,8 @@ var app = express();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var bodyParser = require("body-parser");
+const fs = require('fs');
+const maindeck = require("./cards2.json")
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static("public"));
@@ -12,49 +14,49 @@ app.set("view engine", "ejs")
 
 ///////////////////////////////////MONGOOSE SECTION//////////////////////////
 
-var mongoose = require("mongoose");
-mongoose.set('useUnifiedTopology', true);
-mongoose.set('useNewUrlParser', true);
-mongoose.connect("mongodb://localhost/demo")
+// var mongoose = require("mongoose");
+// mongoose.set('useUnifiedTopology', true);
+// mongoose.set('useNewUrlParser', true);
+// mongoose.connect('mongodb+srv://inferno:vrPhIaePgu7U89EL@tree-tzbqv.mongodb.net/cardparty?retryWrites=true"', {
+//   useNewUrlParser: true,
+//   useCreateIndex: true
+// }).then(() => {
+//   console.log("Connection to DB successful");
+// }).catch(err => {
+//   console.log("Error: ", err.message);
+// });
 
-//Card schema
-var cardSchema = new mongoose.Schema({
-  text: String,
-  type: String
-})
+// //Card schema
+// var cardSchema = new mongoose.Schema({
+//   text: String,
+//   type: String
+// });
 
-var Card = mongoose.model("Card", cardSchema);
+// var Card = mongoose.model("Card", cardSchema);
 
-//Hand Schema
-var handSchema = new mongoose.Schema({
-  username: String,
-  cards: [cardSchema]
-})
-var Hand = mongoose.model("Hand", handSchema)
+///////////////////////////////////////////Server Variables/////////////////////////////////////
+var playerList = [];
+var lobbyList = {};
 
-//Lobby schema
-var lobbySchema = new mongoose.Schema({
-  Servername: String,
-  players: [],
-  password: String,
-  lobbyCode: String,
-  hands: [handSchema]
-});
+var masterDeck = maindeck.Cardss;
 
-var Lobby = mongoose.model("Lobby", lobbySchema);
-
-//Player Schema
-var playerSchema = new mongoose.Schema({
-  username: String,
-  ip: String
-})
-
-var Player = mongoose.model("Player", playerSchema)
+// Card.find({}, function(err, cardsResponse){
+//   if(err) {
+//     console.log("Error retrieving cards from database");
+//   }
+//   else {
+//     cardsResponse.forEach(function(el) {
+//       masterDeck.push(el)
+//     } )
+//   }
+// })
 
 ////////////////////////////////////////////PAGE ROUTES////////////////////////////////////////
 
 //Serve index page
 app.get('/', function(req, res){
+  console.log("playerList: " + playerList);
+  console.log("lobbyList: " + lobbyList)
   res.render("index")
 });
 
@@ -70,7 +72,7 @@ app.post("/game/join", function(req,res) {
   var gameCode = req.body.gameCode;
 
   checkUserExists(username, function(existsResponse) {
-    if (existsResponse === 1) {
+    if (existsResponse === false) {
       console.log("No user exists")
       createPlayer(username, ip);
       addToLobby(username,gameCode);
@@ -90,7 +92,7 @@ app.post('/game/new', function(req, res){
   var username = req.body.username.toLowerCase();
 
   checkUserExists(username, function(existsResponse) {
-    if (existsResponse === 1) {
+    if (existsResponse === false) {
       console.log("No user exists")
       createPlayer(username, ip);
       createLobby(username, ip, function(code) {
@@ -136,6 +138,7 @@ app.post("/cards", function(req,res) {
   newCard.save(function(err, saved) {
     if(err){
       console.log("Problem saving to database");
+      console.log(err.message)
     }
     else {
       console.log(saved + " was saved to the database")
@@ -150,9 +153,16 @@ app.post("/cards", function(req,res) {
 io.on('connection', function (socket) {
   console.log("user has connected: " + socket.id)
 
+  var id;
   socket.on("newUser", function(data) {
+    
+    //Setup variables for game
     socket.username = data.username;
     socket.lobbycode = data.lobbycode;
+
+    lobbyList[socket.lobbycode][socket.username] = socket.id;
+    id = lobbyList[socket.lobbycode][socket.username]
+    console.log("Socket ID :" + lobbyList[socket.lobbycode][socket.username])
     console.log("Socket Username: " + socket.username);
     console.log("Socket LobbyCode: " + socket.lobbycode)
   })
@@ -168,7 +178,19 @@ io.on('connection', function (socket) {
 
   socket.on("Start game", function() {
     console.log("Game started in room: " + socket.lobbycode + " by " + socket.username)
-    io.to(socket.lobbycode).emit("StartGame", {lobbycode:socket.lobbycode, username: socket.username})
+
+    setupDecks(socket);
+  })
+
+  socket.on("retrieve hand", function() {
+    console.log("Attempting to retrieve deck");
+    if(lobbyList[socket.lobbycode].hands[socket.username]) {
+      console.log("Hand found! : " + lobbyList[socket.lobbycode].hands[socket.username]);
+      io.to(lobbyList[socket.lobbycode][socket.username]).emit("send back hand", {hand: lobbyList[socket.lobbycode].hands[socket.username]})
+    }
+    else {
+      console.log("No hand found")
+    }
   })
 
   //When a client tries to broadcast a messge to their room
@@ -181,8 +203,8 @@ io.on('connection', function (socket) {
     var connectionMessage = socket.username + " Disconnected from Socket " + socket.id;
     console.log(connectionMessage);
     removePlayer(socket.username);
-    removeFromServer(socket.username, socket.lobbycode);
-    checkForEmptyServer();
+    // removeFromServer(socket.username, socket.lobbycode);
+    checkForEmptyServer(socket.lobbycode);
   });
 });
 
@@ -198,120 +220,110 @@ http.listen(3000 ,function(){
 
 ///////////////////////////////////////////////////Functions/////////////////////////////////////////
 
-/////Returns: (2 = error, 1 = user exists, 0 = no user exists)
+
+
+/////////////////////////////////////////////////Object Creation//////////////////////////////////////////
 function checkUserExists(username, callback) {
-  var response = Player.find({username: username}, function(err, playerResponse){
-  if(err) {
-    console.log("Error trying to get user data")
-  }
-  else if (playerResponse.length === 0){
-    callback(1);
-  }
-  else {
-    callback(0);
-  }
-})
+  var response = playerList.includes(username)
+  console.log("playerList " + playerList)
+  console.log("Response " + response)
+  callback(response)
 }
 
-//Create a player object with given username and ip and store it in the database
-function createPlayer(username,ip) {
-  var player = new Player({
+function createPlayer(username, ip) {
+  var player = {
     username: username,
     ip: ip
-  })
-
-  player.save(function(err,saved) {
-    if(err) {
-      console.log("error saving player")
-    }
-    else {
-      console.log("player saved")
-    }
-  })
+  }
+  playerList.push(player)
+  console.log("Playerlist = " + playerList)
 }
 
 //Create a lobby object with given username and ip and store it in the database
 function createLobby(username, ip, callback) {
   //Create a new lobby
   generateLobbyCode(function(code) {
-    var newLobby = new Lobby({
-      Servername: username + "'s Server",
-      players: [username],
-      lobbyCode: code
-    });
-  
-    newLobby.save(function(err, saved) {
-      if(err) {
-        console.log("Problem setting up a new lobby.")
-      }
-      else {
-        console.log("Setup new lobby")
-      }
-    })
 
+    var newLobby = {
+        ServerName: username + "'s lobby",
+        players: [username],
+        hands: {}
+    }
+    newLobby.hands[username] = [];
+    lobbyList[code] = newLobby;
+
+    console.log(lobbyList[code])
     callback(code);
   })
 }
 
 function generateLobbyCode(callback) {
   var code = Math.floor(100000 + Math.random() * 900000);
-  Lobby.find({lobbyCode: code}, function(err, response) {
-    if(err) {
-      console.log("error generating lobby code")
-    }
-    else if(response.length == 0) {
-      console.log("no matching lobby code")
-      callback(code);
-    }
-    else {
-      console.log("Matching lobby codes!!!!!!!!!!! Generating new code");
-      var newcode = Math.floor(100000 + Math.random() * 900000);
-      callback(newcode);
-    }
-  })
+  callback(code);
 }
 
+//////////////////////////////////////////////Game logic/////////////////////////////////////////////////////
+
+function setupDecks(socket) {
+  console.log(lobbyList[socket.lobbycode].players)
+    for (var i = 0; i < lobbyList[socket.lobbycode].players.length; i++) {
+      var currentPlayers = lobbyList[socket.lobbycode].players
+      var temp = [];
+      for (var j = 0; j < 4; j++) {
+        var item = masterDeck[Math.floor(Math.random() * masterDeck.length)];
+        temp.push(item);
+      }
+
+      lobbyList[socket.lobbycode].hands[currentPlayers[i]].push(temp);
+      console.log( "DATA:////////////// " + lobbyList[socket.lobbycode].hands[currentPlayers[i]])
+
+    console.log("ID: " + lobbyList[socket.lobbycode][currentPlayers[i]])
+    console.log("hadn: " + lobbyList[socket.lobbycode].hands[socket.username])
+    io.to(lobbyList[socket.lobbycode][currentPlayers[i]]).emit('deck', {hand: lobbyList[socket.lobbycode].hands[currentPlayers[i]]});
+    }
+}
+
+
+//////////////////////////////////////////////Server exit///////////////////////////////////////////////////
 function removePlayer(username) {
-  Player.deleteOne({"username":username}, function (err) {
-    if(err) console.log(err);
-    console.log("Successful deletion");
-  })
+  for (var i = 0; i < playerList.length; i++) {
+    if (playerList[i].username === username) {
+      playerList.splice(i,1)
+      console.log("playerlist: " + playerList)
+    }
+  }
 }
 
 function removeFromServer(username,lobbycode) {
   console.log("removing: " + username)
 
-  Lobby.find({lobbyCode: lobbycode}, function (err, response) {
-    var Servername = response.Servername;
-    console.log(response)
-    var index = response[0].players.indexOf(username);
-    response[0].players.splice(index,1);
-    Lobby.updateOne({lobbyCode: lobbycode}, {$set: {"players":response[0].players}}, function(err,response) {
-      if(err) {
-        console.log(err)
-      }
-    })
-  })
+  for (var i = 0; i < Object.keys(lobbyList); i++) {
+    if(lobbyList[lobbycode].players[i] === username) {
+      lobbyList[lobbycode].players.splice(i,1)
+      console.log("lobbylist: " + lobbyList)
+    }
+  }
 }
 
-function checkForEmptyServer() {
-  Lobby.deleteMany({"players":{$size: 0}}, function(err, response) {
-    if (err) console.log("err");
-    console.log("empty server found")
-  })
+function checkForEmptyServer(lobbycode) {
+    for (var i = 0; i < Object.keys(lobbyList); i++) {
+      if (lobbyList[lobbycode].players.length === 0) {
+        delete lobbyList[lobbycode];
+      }
+    }
+
 }
 
 function addToLobby(username,gameCode) {
-  Lobby.find({lobbyCode: gameCode}, function (err, response) {
-    var Servername = response.Servername;
-    console.log(response)
-    response[0].players.push(username);
-    Lobby.updateOne({lobbyCode: gameCode}, {$set: {"players":response[0].players}}, function(err,response) {
-      if(err) {
-        console.log(err)
-      }
-    })
-  })
+  if (lobbyList[gameCode]) {
+    lobbyList[gameCode].players.push(username);
+    lobbyList[gameCode].hands[username] = [];
+    console.log("Current Lobby = " + lobbyList[gameCode].players);
+  }
+  else {
+    console.log("Lobby does not exitst");
+  }
+
 }
 
 
