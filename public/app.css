@@ -51,6 +51,34 @@ body {
     vertical-align: top;
 }
 
+.gamewhitecard {
+    background-color: white;
+    width: 12.5%;
+    height: 300px;
+    border: 2px solid black;
+    padding: 2% 2%;
+    margin: 2.5% 0.5%;
+    color: #DC3546;
+    display: inline-block;
+    position: relative;
+    overflow-wrap: break-word;
+    vertical-align: top;
+}
+
+.gameredcard {
+    background-color: #DC3546;
+    width: 12.5%;
+    height: 300px;
+    border: 2px solid black;
+    padding: 2% 2%;
+    margin: 2.5% 0.5%;
+    color: white;
+    display: inline-block;
+    position: relative;
+    overflow-wrap: break-word;
+    vertical-align: top;
+}
+
 #mainleft {
     background-color: #DC3546;
     text-align: center;
@@ -60,6 +88,13 @@ body {
 #mainright {
     background-color: #343A40;
     text-align: center;
+}
+
+#hand {
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+    margin: 0 auto; 
 }
 
 @media only screen and (max-width: 972px) {

@@ -1,6 +1,6 @@
 <%- include("partials/header") %>
 
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col">
             <h1>Game Code: <%=  lobbycode%> </h1>
@@ -11,6 +11,9 @@
             
              <p>Username: <%=username %> </p>
         </div>
+    </div>
+    <div class="row align-items-end" id="hand">
+
     </div>
 </div>
 
@@ -50,14 +53,41 @@
         socket.emit("connect to room", {room: room}) 
     }
 
+    function displayHand(data) {
+        var listItem = ""; 
+        $.each( data.hand[0], function( i, item ) {
+            console.log(data.hand[0][i].text);
+            console.log(data.hand[0][i].type);
+            if (data.hand[0][i].type === "red") {
+                console.log(item)
+                listItem += "<div class='gameredcard'><p>" + item.text + "</p></div>";
+            } 
+            else {
+                listItem += "<div class='gamewhitecard'><p>" + item.text + "</p></div>";
+            }
+        });
+        $( "#hand" ).html( listItem );
+    }
+
+    socket.on("deck", (data) => {
+        console.log("Deck: " + data.hand);
+        displayHand(data);
+    });
+
+    socket.on("send back hand", (data) => {
+        console.log("Hand retrieved: " + data.hand);
+        displayHand(data);
+    })
+
     socket.on("recievedmessage", (data) => {
         console.log("Message : " + data.message + " to " + currentRoom + " room.")
-    })
+    });
 
     socket.on("connectedRoom", (data) => {
         console.log("User " + username + " has connected to " + data.room + " room")
         currentRoom = data.room;
         numOfUsers++;
-    })
+        socket.emit("retrieve hand");
+    });
 </script>  
 <%- include("partials/footer") %>
