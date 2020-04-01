@@ -4,13 +4,12 @@
         <div class="col"><h1>Viewing all cards:</h1></div>
     </div>
     <div class="row">
-        <% cards.forEach(element => { %>
-            <% if (element.type === "white") {%> 
+        <% cards.White.forEach(element => { %>
                 <div class="whitecard"><p><%=element.text%></p></div>
-            <% } else  {%>
-                <div class="redcard"><p><%=element.text%></p></div>
-            <% } %>   
-        <% }); %> 
+        <% }); %>
+        <% cards.Red.forEach(element => { %>
+            <div class="redcard"><p><%=element.text%></p></div>
+    <% }); %>  
     </div>
 </div>
 <%- include("partials/footer") %>

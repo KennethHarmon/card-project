@@ -6,50 +6,17 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var bodyParser = require("body-parser");
 const fs = require('fs');
-const maindeck = require("./cards2.json")
+const maindeck = require("./cards.json")
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static("public"));
 app.set("view engine", "ejs")
 
-///////////////////////////////////MONGOOSE SECTION//////////////////////////
-
-// var mongoose = require("mongoose");
-// mongoose.set('useUnifiedTopology', true);
-// mongoose.set('useNewUrlParser', true);
-// mongoose.connect('mongodb+srv://inferno:vrPhIaePgu7U89EL@tree-tzbqv.mongodb.net/cardparty?retryWrites=true"', {
-//   useNewUrlParser: true,
-//   useCreateIndex: true
-// }).then(() => {
-//   console.log("Connection to DB successful");
-// }).catch(err => {
-//   console.log("Error: ", err.message);
-// });
-
-// //Card schema
-// var cardSchema = new mongoose.Schema({
-//   text: String,
-//   type: String
-// });
-
-// var Card = mongoose.model("Card", cardSchema);
-
 ///////////////////////////////////////////Server Variables/////////////////////////////////////
 var playerList = [];
 var lobbyList = {};
 
-var masterDeck = maindeck.Cardss;
-
-// Card.find({}, function(err, cardsResponse){
-//   if(err) {
-//     console.log("Error retrieving cards from database");
-//   }
-//   else {
-//     cardsResponse.forEach(function(el) {
-//       masterDeck.push(el)
-//     } )
-//   }
-// })
+var masterDeck = maindeck;
 
 ////////////////////////////////////////////PAGE ROUTES////////////////////////////////////////
 
@@ -110,18 +77,8 @@ app.post('/game/new', function(req, res){
 
 //Serve cards page
 app.get('/cards', function(req, res){
-  var cards = [];
-  Card.find({}, function(err, cardsResponse){
-    if(err) {
-      console.log("Error retrieving cards from database");
-    }
-    else {
-      cardsResponse.forEach(function(el) {
-        cards.push(el)
-      } )
-    }
-    res.render('cardview', {cards: cards})
-  })
+  var cards = masterDeck;
+  res.render("cardview", {cards:cards})
 });
 
 //Serve index page
@@ -153,7 +110,6 @@ app.post("/cards", function(req,res) {
 io.on('connection', function (socket) {
   console.log("user has connected: " + socket.id)
 
-  var id;
   socket.on("newUser", function(data) {
     
     //Setup variables for game
@@ -184,7 +140,8 @@ io.on('connection', function (socket) {
 
   socket.on("retrieve hand", function() {
     console.log("Attempting to retrieve deck");
-    if(lobbyList[socket.lobbycode].hands[socket.username]) {
+    console.log("player hand :" + lobbyList[socket.lobbycode].hands[socket.username])
+    if(lobbyList[socket.lobbycode].hands[socket.username].length > 0) {
       console.log("Hand found! : " + lobbyList[socket.lobbycode].hands[socket.username]);
       io.to(lobbyList[socket.lobbycode][socket.username]).emit("send back hand", {hand: lobbyList[socket.lobbycode].hands[socket.username]})
     }
@@ -269,16 +226,20 @@ function setupDecks(socket) {
     for (var i = 0; i < lobbyList[socket.lobbycode].players.length; i++) {
       var currentPlayers = lobbyList[socket.lobbycode].players
       var temp = [];
+      
+      //load the white cards
       for (var j = 0; j < 4; j++) {
-        var item = masterDeck[Math.floor(Math.random() * masterDeck.length)];
+        var item = masterDeck.White[Math.floor(Math.random() * masterDeck.White.length)];
+        temp.push(item);
+      }
+      
+      //Load the red cards
+      for (var j = 0; j < 3; j++) {
+        var item = masterDeck.Red[Math.floor(Math.random() * masterDeck.Red.length)];
         temp.push(item);
       }
 
       lobbyList[socket.lobbycode].hands[currentPlayers[i]].push(temp);
-      console.log( "DATA:////////////// " + lobbyList[socket.lobbycode].hands[currentPlayers[i]])
-
-    console.log("ID: " + lobbyList[socket.lobbycode][currentPlayers[i]])
-    console.log("hadn: " + lobbyList[socket.lobbycode].hands[socket.username])
     io.to(lobbyList[socket.lobbycode][currentPlayers[i]]).emit('deck', {hand: lobbyList[socket.lobbycode].hands[currentPlayers[i]]});
     }
 }
