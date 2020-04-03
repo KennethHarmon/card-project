@@ -23,61 +23,49 @@ body {
     color: #343A40;
 }
 
+
 .whitecard {
     background-color: white;
-    width: 19%;
-    height: 300px;
     border: 2px solid black;
-    padding: 2% 2%;
-    margin: 2.5% 0.5%;
+    height: 250px;
+    margin: 1% 0.5%;
     color: #DC3546;
-    display: inline-block;
-    position: relative;
-    overflow-wrap: break-word;
-    vertical-align: top;
+    padding: 1% 1%;
 }
 
 .redcard {
     background-color: #DC3546;
-    width: 19%;
-    height: 300px;
     border: 2px solid black;
-    padding: 2% 2%;
-    margin: 2.5% 0.5%;
+    height: 250px;
+    margin: 1% 0.5%;
     color: white;
-    display: inline-block;
-    position: relative;
-    overflow-wrap: break-word;
-    vertical-align: top;
+    padding: 1% 1%;
 }
-
 .gamewhitecard {
     background-color: white;
-    width: 12.5%;
-    height: 300px;
     border: 2px solid black;
-    padding: 2% 2%;
-    margin: 2.5% 0.5%;
+    height: 225px;
+    margin: 1% 0.5%;
     color: #DC3546;
-    display: inline-block;
-    position: relative;
-    overflow-wrap: break-word;
-    vertical-align: top;
+    padding: 1% 1%;
 }
 
 .gameredcard {
     background-color: #DC3546;
-    width: 12.5%;
-    height: 300px;
     border: 2px solid black;
-    padding: 2% 2%;
-    margin: 2.5% 0.5%;
+    height: 225px;
+    margin: 1% 0.5%;
     color: white;
-    display: inline-block;
-    position: relative;
-    overflow-wrap: break-word;
-    vertical-align: top;
+    padding: 1% 1%
 }
+
+.selectedcard {
+    background: pink;
+    margin-bottom: 10px;
+    box-shadow: 3px 3px 4px 4px black;
+
+}
+
 
 #mainleft {
     background-color: #DC3546;
@@ -91,13 +79,32 @@ body {
 }
 
 #hand {
-    position: fixed;
-    bottom: 20px;
     width: 100%;
     margin: 0 auto; 
+    position: relative;
 }
 
-@media only screen and (max-width: 972px) {
+#overlay {
+    display: none;
+    position: absolute;
+    width: 90%;
+    height: 100%;
+    bottom: 10;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 10;
+    cursor: pointer;
+    text-align: center;
+    margin-right: 3rem;
+  }
+
+/* #handsdisplay {
+    min-height: 40%;
+    float: none;
+    min-width: 200px;
+    padding: 10%;
+} */
+
+/* @media only screen and (max-width: 972px) {
     .whitecard {
         background-color: white;
         width: 30%;
@@ -186,4 +193,4 @@ body {
         overflow-wrap: break-word;
         vertical-align: top;
     }
-  }
+  } */
