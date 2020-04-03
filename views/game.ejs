@@ -1,19 +1,23 @@
 <%- include("partials/header") %>
 
-<div class="container-fluid">
+<div class="container-fluid mx-5 mt-3">
     <div class="row">
         <div class="col">
             <h1>Game Code: <%=  lobbycode%> </h1>
-            <input type="text" name="message" id="message" placeholder="enter your message">
-            <button id="private">Broadcast</button>
             <br>
             <button id="Start">Start Game</button>
-            
-             <p>Username: <%=username %> </p>
+            <button id="ConfirmSelection">Confirm selection</button>
+            <p>Username: <%=username %> </p>
+            <div id="status"></div>
         </div>
     </div>
-    <div class="row align-items-end" id="hand">
-
+    <div id="handsdisplaytitle"></div>
+    <div class="row mt-4" id="handsdisplay"></div>
+    <h4 style="float: bottom;">Please choose two white cards: </h4>
+    <div class="row" id="hand">
+        <div id="overlay">
+            <h3 style="color: white; margin: 40px">You're the single</h3>
+        </div>
     </div>
 </div>
 
@@ -21,6 +25,12 @@
     var socket = io();
     var currentRoom = "";
     var numOfUsers = 0;
+    var handDisplay;
+    var cardDisplayIndex = 0;
+    var playerList;
+    var currentCardDisplay = 0;
+    var isWhiteRound = true;
+    var isSingle = false;
     
     //Parse query headers in URL
     function getUrlParameter(name) {
@@ -36,17 +46,79 @@
     socket.emit("newUser", {username: username, lobbycode: lobbycode})
     socket.emit("connect to room", {room: lobbycode})
     
-
     $("#Start").click(function(){
-        console.log("Start Game")
         socket.emit("Start game")
     });
 
-    //Send message to current room
-    $("#private").click(function(){
-        var message = $("#message").val();
-        socket.emit("room message", {message: message, room:currentRoom})
+    $("#hand").on('click','.handcard',function(){
+        $( this ).toggleClass("selectedcard");
+    });
+
+    $("#ConfirmSelection").on("click", function() {
+        console.log("Selecting")
+        var selectedcards = [];
+        var wrongSelected = false;
+        var wrongCardAmount = false;
+
+        //Check if the wrong type of card has been selected
+        $(".selectedcard").each(function(index,el){
+            if(isWhiteRound === true){
+                if(el.classList.contains("gameredcard")){
+                console.log("Selected a red card");
+                wrongSelected = true;
+                }
+            }
+            else {
+                if(el.classList.contains("gamewhitecard")){
+                console.log("Selected wrong type of card card");
+                wrongSelected = true;
+                }
+            }
+        });
+
+        //Check if the wrong amount of cards have been selected
+        if((isWhiteRound && $(".selectedcard").length != 2) || (isWhiteRound === false && $(".selectedcard").length != 1) ) {
+                console.log("Selected wrong amount of cards");
+                wrongCardAmount = true;
+            }
+        
+        if(wrongSelected === false && wrongCardAmount === false) {
+            console.log("Hand okay");
+            $(".selectedcard").each(function(index,el){
+                if(el.classList.contains("gamewhitecard")) {
+                    obj = {
+                        text: el.textContent,
+                        type: "white"
+                        }
+                }
+                else {
+                    obj = {
+                        text: el.textContent,
+                        type: "red"
+                    }
+                }
+                
+                selectedcards.push(obj)
+                $(this).remove()
+            });
+            socket.emit("send hand",{selectedcards:selectedcards});
+        };
+    });
+
+    $("#handsdisplay").on('click','#back', function() {
+        showCardDisplay(-1);
+    });
+    
+    $("#handsdisplay").on('click','#forward', function() {
+        showCardDisplay(1);
+    });
+
+    $("#handsdisplaytitle").on("click","#singlevote",function() {
+        console.log("starting new round");
+        socket.emit("start new round", {winner: playerList[currentCardDisplay]});
     })
+
+
 
     function changeRoom() {
         var room = $("input").val();
@@ -55,33 +127,119 @@
 
     function displayHand(data) {
         var listItem = ""; 
-        $.each( data.hand[0], function( i, item ) {
-            console.log(data.hand[0][i].text);
-            console.log(data.hand[0][i].type);
-            if (data.hand[0][i].type === "red") {
+        $.each( data.hand, function( i, item ) {
+            if (data.hand[i].type === "red") {
                 console.log(item)
-                listItem += "<div class='gameredcard'><p>" + item.text + "</p></div>";
+                listItem += "<div class='col-5 col-sm-3 col-lg-2 col-xl-1 gameredcard handcard'><p>" + item.text + "</p></div>";
             } 
             else {
-                listItem += "<div class='gamewhitecard'><p>" + item.text + "</p></div>";
+                listItem += "<div class='col-5 col-sm-3 col-lg-2 col-xl-1 gamewhitecard handcard'><p>" + item.text + "</p></div>";
             }
         });
-        $( "#hand" ).html( listItem );
+        $( "#hand" ).html("<div id='overlay'><h3 style='color: white; margin: 40px'>You're the single</h3></div>" + listItem);
+    };
+
+    function showCardDisplay(index) {
+        if(currentCardDisplay === 0 && index === -1) {
+            console.log("Error, can't go back.");
+        }
+        else if((currentCardDisplay + index.toString()) > (Object.keys(handDisplay).length) -1){
+            console.log("Error, index too large.")
+        }
+        else {
+            currentCardDisplay += index;
+
+            var holder = "<button id='back'><</button>"
+            for(let i = 0; i < handDisplay[playerList[currentCardDisplay]].length; i++) {
+                console.log(handDisplay[playerList[currentCardDisplay]]);
+                if(handDisplay[playerList[currentCardDisplay]][i]){
+                    if(handDisplay[playerList[currentCardDisplay]][i].type === "white") {
+                    holder += "<div class = 'col-5 col-sm-3 col-lg-2 col-xl-1 gamewhitecard'>" + handDisplay[playerList[currentCardDisplay]][i].text + "</div>";
+                    }
+                    else {
+                        holder += "<div class = 'col-5 col-sm-3 col-lg-2 col-xl-1 gameredcard'>" + handDisplay[playerList[currentCardDisplay]][i].text + "</div>"
+                    }
+                }
+                
+            }
+            holder += "<button id='forward'>></button>"
+            $("#handsdisplay").html(holder);
+            if(isSingle && (Object.keys(handDisplay[playerList[currentCardDisplay]]).length === 3)) {
+                $("#handsdisplaytitle").html("<h4>" + playerList[currentCardDisplay] + "</h4><button id='singlevote'>Choose this hand</button>");
+            }
+            else {
+                $("#handsdisplaytitle").html("<h4>" + playerList[currentCardDisplay] + "</h4>");
+            };
+        }
+    };
+
+    function setupforSingle() {
+        $("#overlay").css("display", "block");
+        isSingle = true;
+        console.log("IM SINGLE");
+        console.log("isSingle = " + isSingle);
+    }
+
+    function makePlayerList(hands) {
+        var players = Object.keys(hands);
+        playerList = players;
     }
 
     socket.on("deck", (data) => {
-        console.log("Deck: " + data.hand);
         displayHand(data);
+    });
+
+    socket.on("Youre single", function() {
+        setupforSingle();
     });
 
     socket.on("send back hand", (data) => {
-        console.log("Hand retrieved: " + data.hand);
         displayHand(data);
     })
 
-    socket.on("recievedmessage", (data) => {
-        console.log("Message : " + data.message + " to " + currentRoom + " room.")
+    socket.on("next stage", (data) => {
+        if(isWhiteRound) {
+            handDisplay = data.hands;
+        }
+        else {
+            console.log("Data hands: " + JSON.stringify(data.hands));
+            console.log("HandDisplay = " + JSON.stringify(handDisplay));
+            let dataKeys = Object.keys(data.hands);
+            for(let i = 0; i < (Object.keys(handDisplay).length); i++) {
+
+                data.hands[dataKeys[i]].forEach(element => {
+                    handDisplay[dataKeys[i]].push(element);
+                });
+                // for(let j = 0; j < data.hands[dataKeys[i]].length; i++){
+                //     console.log("handDisplay[dataKeys[i]]:" + JSON.stringify(handDisplay[dataKeys[i]]));
+                //     console.log("data.hands[dataKeys[j]]:" + JSON.stringify(data.hands[dataKeys[j]]));
+                //     handDisplay[dataKeys[i]].push(data.hands[dataKeys[j]]);
+                // }      
+            }
+            console.log("HandDisplay = " + JSON.stringify(handDisplay));
+        }
+        cardDisplayIndex = 0;
+        makePlayerList(data.hands);
+        showCardDisplay(cardDisplayIndex);
+        isWhiteRound  = !isWhiteRound;
     });
+
+    socket.on("clear singles", () => {
+        console.log("Clear singles");
+        isSingle = false;
+        console.log("isSingle = " + isSingle);
+        $("#overlay").css("display","none");
+    });
+
+    socket.on("new round started", () => {
+        console.log("New round Started.")
+        $("#singlevote").remove();
+        if(isSingle) { 
+            $("#overlay").css("display","block")
+        }
+        $("#handsdisplay").empty();
+        $("#handsdisplaytitle").empty();
+    })
 
     socket.on("connectedRoom", (data) => {
         console.log("User " + username + " has connected to " + data.room + " room")

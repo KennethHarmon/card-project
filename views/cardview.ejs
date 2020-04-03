@@ -1,14 +1,14 @@
 <%- include("partials/header") %>
-<div class="container pl-5">
+<div class="container p-0">
     <div class="row text-center mt-4">
         <div class="col"><h1>Viewing all cards:</h1></div>
     </div>
-    <div class="row">
+    <div class="row justify-content-center ">
         <% cards.White.forEach(element => { %>
-                <div class="whitecard"><p><%=element.text%></p></div>
+                <div class=" col-lg-2 col-md-3 col-sm-4 col-5 whitecard"><p><%=element.text%></p></div>
         <% }); %>
         <% cards.Red.forEach(element => { %>
-            <div class="redcard"><p><%=element.text%></p></div>
+            <div class="col-lg-2 col-md-3 col-sm-4 col-5 redcard"><p><%=element.text%></p></div>
     <% }); %>  
     </div>
 </div>
