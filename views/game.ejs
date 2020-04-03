@@ -4,6 +4,7 @@
     <div class="row">
         <div class="col">
             <h1>Game Code: <%=  lobbycode%> </h1>
+            <div id="leaderboard"></div>
             <br>
             <button id="Start">Start Game</button>
             <button id="ConfirmSelection">Confirm selection</button>
@@ -13,7 +14,7 @@
     </div>
     <div id="handsdisplaytitle"></div>
     <div class="row mt-4" id="handsdisplay"></div>
-    <h4 style="float: bottom;">Please choose two white cards: </h4>
+    <h4 style="float: bottom;" id="instructions">Please choose two white cards: </h4>
     <div class="row" id="hand">
         <div id="overlay">
             <h3 style="color: white; margin: 40px">You're the single</h3>
@@ -31,6 +32,7 @@
     var currentCardDisplay = 0;
     var isWhiteRound = true;
     var isSingle = false;
+    var Leaderboard = {};
     
     //Parse query headers in URL
     function getUrlParameter(name) {
@@ -51,6 +53,7 @@
     });
 
     $("#hand").on('click','.handcard',function(){
+        console.log("Clicked card")
         $( this ).toggleClass("selectedcard");
     });
 
@@ -143,7 +146,7 @@
         if(currentCardDisplay === 0 && index === -1) {
             console.log("Error, can't go back.");
         }
-        else if((currentCardDisplay + index.toString()) > (Object.keys(handDisplay).length) -1){
+        else if((currentCardDisplay + parseInt(index)) > (Object.keys(handDisplay).length) -1){
             console.log("Error, index too large.")
         }
         else {
@@ -185,6 +188,32 @@
         playerList = players;
     }
 
+    function makeLeaderBoard(playerList,winner) {
+        var tempItem = "<h4>Leaderboard: ";
+        console.log(playerList)
+        playerList.forEach(element => {
+            Leaderboard[element] = 0;
+            tempItem += element + ": " + Leaderboard[element] + " "
+        });
+        tempItem += "</h4>"
+        $("#leaderboard").html(tempItem);
+        console.log("LeaderBoard: "+ JSON.stringify(Leaderboard));
+    };
+
+    function updateLeaderBoard(winner,playerList){
+        var tempItem = "<h4>Leaderboard: ";
+        console.log(playerList)
+        playerList.forEach(element => {
+            if(element === winner) {
+                Leaderboard[element]++;
+            }
+            tempItem += element + ": " + Leaderboard[element] + " "
+        });
+        tempItem += "</h4>"
+        $("#leaderboard").html(tempItem);
+        console.log("LeaderBoard: "+ JSON.stringify(Leaderboard));
+    }
+
     socket.on("deck", (data) => {
         displayHand(data);
     });
@@ -200,6 +229,7 @@
     socket.on("next stage", (data) => {
         if(isWhiteRound) {
             handDisplay = data.hands;
+            $("#instructions").text("Please pick a red card for someone else:");
         }
         else {
             console.log("Data hands: " + JSON.stringify(data.hands));
@@ -210,18 +240,18 @@
                 data.hands[dataKeys[i]].forEach(element => {
                     handDisplay[dataKeys[i]].push(element);
                 });
-                // for(let j = 0; j < data.hands[dataKeys[i]].length; i++){
-                //     console.log("handDisplay[dataKeys[i]]:" + JSON.stringify(handDisplay[dataKeys[i]]));
-                //     console.log("data.hands[dataKeys[j]]:" + JSON.stringify(data.hands[dataKeys[j]]));
-                //     handDisplay[dataKeys[i]].push(data.hands[dataKeys[j]]);
-                // }      
             }
             console.log("HandDisplay = " + JSON.stringify(handDisplay));
+            $("#instructions").text("Please pick two white cards to make a date for the single:");
         }
         cardDisplayIndex = 0;
         makePlayerList(data.hands);
         showCardDisplay(cardDisplayIndex);
         isWhiteRound  = !isWhiteRound;
+    });
+
+    socket.on("make leaderboard", (data) => {
+        makeLeaderBoard(data.players);
     });
 
     socket.on("clear singles", () => {
@@ -231,7 +261,7 @@
         $("#overlay").css("display","none");
     });
 
-    socket.on("new round started", () => {
+    socket.on("new round started", function(data) {
         console.log("New round Started.")
         $("#singlevote").remove();
         if(isSingle) { 
@@ -239,7 +269,8 @@
         }
         $("#handsdisplay").empty();
         $("#handsdisplaytitle").empty();
-    })
+        updateLeaderBoard(data.winner,data.players);
+    });
 
     socket.on("connectedRoom", (data) => {
         console.log("User " + username + " has connected to " + data.room + " room")

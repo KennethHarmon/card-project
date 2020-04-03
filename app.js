@@ -10,7 +10,7 @@ const maindeck = require("./cards.json")
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static("public"));
-app.set("view engine", "ejs")
+app.set("view engine", "ejs");
 
 ///////////////////////////////////////////Server Variables/////////////////////////////////////
 var playerList = [];
@@ -137,6 +137,7 @@ io.on('connection', function (socket) {
 
     setupDecks(socket,4,3);
     chooseSingle(socket);
+    io.to(socket.lobbycode).emit("make leaderboard", { players: lobbyList[socket.lobbycode].players});
   });
 
   socket.on("send hand", function(data) {
@@ -220,8 +221,8 @@ app.get("*", function(req,res) {
   res.send("Error, page not found");
 })
 
-http.listen(3000 ,function(){
-  console.log('listening on *:3000');
+http.listen(3024 ,function(){
+  console.log('listening on *:3024');
 });
 
 ///////////////////////////////////////////////////Functions/////////////////////////////////////////
@@ -308,7 +309,7 @@ function setupDecks(socket,white,red) {
           lobbyList[socket.lobbycode].hands[currentPlayers[i]].push(temp[j])
         }
       }
-    io.to(lobbyList[socket.lobbycode][currentPlayers[i]]).emit('deck', {hand: lobbyList[socket.lobbycode].hands[currentPlayers[i]]});
+    io.to(lobbyList[socket.lobbycode][currentPlayers[i]]).emit('deck', {hand: lobbyList[socket.lobbycode].hands[currentPlayers[i]], players: lobbyList[socket.lobbycode].players});
     }
 }
 
@@ -398,13 +399,13 @@ function checkNextRound(lobbycode) {
   }
 };
 
-function startNewRound(socket,white,red,winnner) {
+function startNewRound(socket,white,red,winner) {
   io.to(socket.lobbycode).emit("clear singles");
   lobbyList[socket.lobbycode].handsInPlay = {};
   console.log("SINGLE: " + lobbyList[socket.lobbycode].single);
   setupDecks(socket,white,red);
   chooseNewSingle(socket);
-  io.to(socket.lobbycode).emit("new round started")
+  io.to(socket.lobbycode).emit("new round started", {winner: winner, players: lobbyList[socket.lobbycode].players});
 }
 
 
