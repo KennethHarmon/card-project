@@ -5,7 +5,6 @@ var app = express();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var bodyParser = require("body-parser");
-const fs = require('fs');
 const maindeck = require("./cards.json")
 
 app.use(bodyParser.urlencoded({extended: true}))
@@ -22,8 +21,6 @@ var masterDeck = maindeck;
 
 //Serve index page
 app.get('/', function(req, res){
-  console.log("playerList: " + playerList);
-  console.log("lobbyList: " + lobbyList)
   res.render("index")
 });
 
@@ -32,25 +29,25 @@ app.get("/game", function(req,res) {
   res.render("game", {username: req.query.username, lobbycode: req.query.lobbycode})
 })
 
+//Join Game
 app.post("/game/join", function(req,res) {
   var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
-  console.log(req.body.username)
-  var username = req.body.username.toLowerCase();
+  var username = req.body.username.trim().toLowerCase();
   var gameCode = req.body.gameCode;
 
-  checkUserExists(username, function(existsResponse) {
-    if (existsResponse === false) {
-      console.log("No user exists")
-      createPlayer(username, ip);
-      addToLobby(username,gameCode);
-      res.redirect("/game?username=" + username + "&lobbycode=" + gameCode);
-    }
-    else {
-      console.log("User already exists, can't join lobby")
-      res.redirect("/");
-    }
-  });
+  console.log(username, " is joining game: " + gameCode);
 
+  var doesExist = checkUserExists(username);
+  if (doesExist) {
+    console.log("User already exists, can't join lobby")
+    res.redirect("/");
+  }
+  else {
+    console.log("No user exists")
+    createPlayer(username, ip);
+    addToLobby(username,gameCode);
+    res.redirect("/game?username=" + username + "&lobbycode=" + gameCode);
+  };
 })
 
 //Create a new game
@@ -58,21 +55,19 @@ app.post('/game/new', function(req, res){
   var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
   var username = req.body.username.toLowerCase();
 
-  checkUserExists(username, function(existsResponse) {
-    if (existsResponse === false) {
-      console.log("No user exists")
-      createPlayer(username, ip);
-      createLobby(username, ip, function(code) {
-        console.log("Code: " + code)
-        res.redirect("/game?username=" + username + "&lobbycode=" + code);
-      });
-    }
-    else {
-      console.log("User already exists, can't create lobby")
-      res.redirect("/");
-    }
-  });
-
+  var doesExist = checkUserExists(username);
+  if (doesExist) {
+    console.log("User already exists, can't create lobby")
+    res.redirect("/");
+  }
+  else {
+    console.log("No user exists")
+    createPlayer(username, ip);
+    createLobby(username, ip, function(code) {
+      console.log("Code: " + code)
+      res.redirect("/game?username=" + username + "&lobbycode=" + code);
+    });
+  }
 });
 
 //Serve cards page
@@ -81,93 +76,73 @@ app.get('/cards', function(req, res){
   res.render("cardview", {cards:cards})
 });
 
-//Serve index page
-app.get('/cards/new', function(req, res){
-  res.render("cardcreate")
-});
-
-app.post("/cards", function(req,res) {
-  console.log(req.body.text)
-  var newCard = new Card({
-    text: req.body.text,
-    type: req.body.type
-  });
-  newCard.save(function(err, saved) {
-    if(err){
-      console.log("Problem saving to database");
-      console.log(err.message)
-    }
-    else {
-      console.log(saved + " was saved to the database")
-    }
-  });
-  res.redirect("/cards")
-});
-
 ////////////////////////////////////////////////SOCKET.IO SECTION/////////////////////////////////////////
 
 //Once a socket has connected
 io.on('connection', function (socket) {
-  console.log("user has connected: " + socket.id)
-
+  console.log("user has connected: " + socket.id);
+  
   socket.on("newUser", function(data) {
-    
-    //Setup variables for game
+    //Setup players socket variabless
     socket.username = data.username;
     socket.lobbycode = data.lobbycode;
 
+    //Add Id to lobbyList under players username
     lobbyList[socket.lobbycode][socket.username] = socket.id;
-    id = lobbyList[socket.lobbycode][socket.username]
-    console.log("Socket ID :" + lobbyList[socket.lobbycode][socket.username])
-    console.log("Socket Username: " + socket.username);
-    console.log("Socket LobbyCode: " + socket.lobbycode)
-  })
 
-  //User has tried connect to room => data.room
-  socket.on("connect to room", function(data){
-    console.log('User trying to connect to room ' + data.room);
-    //Join specified room
-    socket.join(data.room);
-    //Transmit to the client they are connected to specified room
-    io.to(data.room).emit("connectedRoom", { room: data.room, socket: socket.id});
+    //Add the player to the room only if they're listed in the players for that room
+    if (lobbyList[socket.lobbycode].players.includes(socket.username)){
+      console.log("Adding: " + socket.username + " to: " + socket.lobbycode);
+      socket.join(socket.lobbycode);
+      io.to(socket.lobbycode).emit("connectedRoom", { room: data.room, players: lobbyList[socket.lobbycode].players});
+    }
+
+    console.log("Socket ID :" + socket.id);
+    console.log("Socket Username: " + socket.username);
+    console.log("Socket LobbyCode: " + socket.lobbycode);
   });
 
-  socket.on("Start game", function() {
+  socket.on("Start game", () => {
     console.log("Game started in room: " + socket.lobbycode + " by " + socket.username)
 
     setupDecks(socket,4,3);
-    chooseSingle(socket);
-    io.to(socket.lobbycode).emit("make leaderboard", { players: lobbyList[socket.lobbycode].players});
+    chooseRandomSingle(socket);
+    io.to(socket.lobbycode).emit("game started");
   });
 
   socket.on("send hand", function(data) {
+    let username = socket.username;
+    let lobbycode = socket.lobbycode;
+    let currentPlayersHand = lobbyList[lobbycode].hands[username]
+
     console.log("Hand recieved: " + data.selectedcards)
-    console.log("PLayers: 122421 " + JSON.stringify(lobbyList[socket.lobbycode].players));
+    console.log("PLayers: 122421 " + JSON.stringify(lobbyList[lobbycode].players));
+
     var tempPlayerList = [];
-      lobbyList[socket.lobbycode].players.forEach(element => {
-        tempPlayerList.push(element);
-      }); 
-      console.log("Temp player List: " + JSON.stringify(tempPlayerList));
+      lobbyList[lobbycode].players.forEach(element => {
+      tempPlayerList.push(element);
+    }); 
+    console.log("Temp player List: " + JSON.stringify(tempPlayerList));
 
-      var singleIndex = tempPlayerList.indexOf(lobbyList[socket.lobbycode].single);
-      tempPlayerList.splice(singleIndex, 1);
+    var singleIndex = tempPlayerList.indexOf(lobbyList[lobbycode].single);
+    tempPlayerList.splice(singleIndex, 1);
 
-    for(let i = 0; i < lobbyList[socket.lobbycode].hands[socket.username].length; i++) {
-      if(data.selectedcards[0].text === lobbyList[socket.lobbycode].hands[socket.username][i].text){
-        lobbyList[socket.lobbycode].hands[socket.username].splice(i, 1);
-      }
+    //Remove matching cards from the players hands
+    for(let i = 0; i < currentPlayersHand.length; i++) {
+      if(data.selectedcards[0].text === currentPlayersHand[i].text){
+        lobbyList[lobbycode].hands[username].splice(i, 1);
+      };
       
       if(data.selectedcards[1]){
-        if(data.selectedcards[1].text == lobbyList[socket.lobbycode].hands[socket.username][i].text) {
-          lobbyList[socket.lobbycode].hands[socket.username].splice(i, 1);
+        if(data.selectedcards[1].text == currentPlayersHand[i].text) {
+          lobbyList[lobbycode].hands[username].splice(i, 1);
         }
-      }
+      };
     };
 
-    var username = socket.username;
+    //If the data contains red cards, shuffle them to another persons hand
     if(data.selectedcards[0].type === "red") {
-
-      var currentPlayerIndex = tempPlayerList.indexOf(socket.username);
+      var currentPlayerIndex = tempPlayerList.indexOf(username);
 
       if(currentPlayerIndex === (tempPlayerList.length -1)) {
         currentPlayerIndex = 0;
@@ -175,42 +150,31 @@ io.on('connection', function (socket) {
       else {
         currentPlayerIndex++;
       }
-      console.log("Actual player index = " + lobbyList[socket.lobbycode].players.indexOf[username]);
-      console.log("currentplayerIndex = " + currentPlayerIndex);
-      console.log("currentLPayerindex username = " + tempPlayerList[currentPlayerIndex]);
 
-      lobbyList[socket.lobbycode].handsInPlay[tempPlayerList[currentPlayerIndex]] = data.selectedcards;
+      lobbyList[lobbycode].handsInPlay[tempPlayerList[currentPlayerIndex]] = data.selectedcards;
     }
+    //If its just white cards it can just be pushed to the corresponding username
     else {
-      lobbyList[socket.lobbycode].handsInPlay[username] = data.selectedcards;
-    }
-    console.log("PLayer list: 1212 " + JSON.stringify(lobbyList[socket.lobbycode].players));
-    console.log("HANDS IN PLAY: " + JSON.stringify(lobbyList[socket.lobbycode].handsInPlay));
-    console.log("################");
-    checkNextRound(socket.lobbycode);
+      lobbyList[lobbycode].handsInPlay[username] = data.selectedcards;
+    };
+
+    checkNextRound(lobbycode);
   });
 
   socket.on("start new round", function(data) {
     console.log("Round winner: " + data.winner);
     startNewRound(socket,2,1,data.winner);
-  })
+  });
 
-  socket.on("retrieve hand", function() {
-    console.log("Attempting to retrieve deck");
-    console.log("player hand :" + lobbyList[socket.lobbycode].hands[socket.username])
-    if(lobbyList[socket.lobbycode].hands[socket.username].length > 0) {
-      console.log("Hand found! : " + lobbyList[socket.lobbycode].hands[socket.username]);
-      io.to(lobbyList[socket.lobbycode][socket.username]).emit("send back hand", {hand: lobbyList[socket.lobbycode].hands[socket.username]})
-    }
-    else {
-      console.log("No hand found")
-    }
-  })
+  socket.on("chat message", function(msg){
+    io.to(socket.lobbycode).emit("chat message", msg);
+  });
 
   socket.on('disconnect', function () {
     var connectionMessage = socket.username + " Disconnected from Socket " + socket.id;
     console.log(connectionMessage);
     removePlayer(socket.username);
+    removeFromServer(socket.username,socket.lobbycode);
     checkForEmptyServer(socket.lobbycode);
   });
 });
@@ -230,11 +194,11 @@ http.listen(3024 ,function(){
 
 
 /////////////////////////////////////////////////Object Creation + Player adding//////////////////////////////////////////
-function checkUserExists(username, callback) {
+function checkUserExists(username) {
   var response = playerList.includes(username)
   console.log("playerList " + playerList)
   console.log("Response " + response)
-  callback(response)
+  return response
 }
 
 function createPlayer(username, ip) {
@@ -313,7 +277,7 @@ function setupDecks(socket,white,red) {
     }
 }
 
-function chooseSingle(socket) {
+function chooseRandomSingle(socket) {
   console.log("CHOOSESINGLE")
   var single = lobbyList[socket.lobbycode].players[Math.floor(Math.random() * lobbyList[socket.lobbycode].players.length)];
   var id = lobbyList[socket.lobbycode][single];
@@ -323,6 +287,7 @@ function chooseSingle(socket) {
   lobbyList[socket.lobbycode].single = single;
 
   io.to(id).emit("Youre single");
+  io.to(socket.lobbycode).emit("single is", {single: single});
   console.log("ACtual single : " + lobbyList[socket.lobbycode].single)
 }
 
@@ -349,50 +314,20 @@ function chooseNewSingle(socket) {
   lobbyList[socket.lobbycode].single = single;
 
   io.to(id).emit("Youre single");
+  io.to(socket.lobbycode).emit("single is", {single: single});
   console.log("ACtual single : " + lobbyList[socket.lobbycode].single)
-}
-
-
-//////////////////////////////////////////////Server exit///////////////////////////////////////////////////
-function removePlayer(username) {
-  for (var i = 0; i < playerList.length; i++) {
-    if (playerList[i].username === username) {
-      playerList.splice(i,1)
-      console.log("playerlist: " + playerList)
-    }
-  }
-};
-
-function checkForEmptyServer(lobbycode) {
-    for (var i = 0; i < Object.keys(lobbyList); i++) {
-      if (lobbyList[lobbycode].players.length === 0) {
-        delete lobbyList[lobbycode];
-      }
-    }
-
 };
 
 function checkNextRound(lobbycode) {
-  console.log("Checking next round!");
-  console.log(Object.keys(lobbyList[lobbycode].handsInPlay).length);
-  console.log("PLayer list: " + lobbyList[lobbycode].players)
-  console.log((lobbyList[lobbycode].players.length - 1));
   if(Object.keys(lobbyList[lobbycode].handsInPlay).length === (lobbyList[lobbycode].players.length - 1)){
-    console.log("SINGLE: " + lobbyList[lobbycode].single);
     var cardTotal = 0;
     for(let i = 0; i < lobbyList[lobbycode].players.length; i++){
       var name = lobbyList[lobbycode].players[i];
       if(lobbyList[lobbycode].handsInPlay[name]){
-        console.log("//////////////NAME: " + name);
-        console.log("///////////////HANDSINPLAY" + JSON.stringify(lobbyList[lobbycode].handsInPlay))
-        console.log("///////////////" + JSON.stringify(lobbyList[lobbycode].handsInPlay[name]))
         cardTotal += lobbyList[lobbycode].handsInPlay[name].length;
       }
     }
-    console.log("CardTotal = " + cardTotal);
-    console.log("Amount of players -1 = " + ((lobbyList[lobbycode].players.length) -1));
     var division = (cardTotal/((lobbyList[lobbycode].players.length)-1));
-    console.log("Division = " + division);
     if(division === 2 || division === 1  ) {
       io.to(lobbycode).emit("next stage", {hands: lobbyList[lobbycode].handsInPlay})
     }
@@ -406,6 +341,38 @@ function startNewRound(socket,white,red,winner) {
   setupDecks(socket,white,red);
   chooseNewSingle(socket);
   io.to(socket.lobbycode).emit("new round started", {winner: winner, players: lobbyList[socket.lobbycode].players});
-}
+};
+
+//////////////////////////////////////////////Server exit///////////////////////////////////////////////////
+function removePlayer(username) {
+  for (var i = 0; i < playerList.length; i++) {
+    if (playerList[i].username === username) {
+      playerList.splice(i,1)
+      console.log("playerlist: " + playerList)
+    }
+  }
+};
+
+function removeFromServer(username,lobbycode) {
+  if(lobbyList[lobbycode]){
+    lobbyList[lobbycode].players.forEach(function(element,index) {
+      if(username === element){
+        lobbyList[lobbycode].players.splice(index, 1);
+        delete lobbyList[lobbycode].hands[username];
+        delete lobbyList[lobbycode][username];
+      };
+    });
+  };
+  console.log("Server = " + JSON.stringify(lobbyList[lobbycode]));
+};
+
+function checkForEmptyServer(lobbycode) {
+  if(lobbyList[lobbycode]){
+    if (lobbyList[lobbycode].players.length === 0) {
+      delete lobbyList[lobbycode];
+    };
+  }
+};
+
 
 
