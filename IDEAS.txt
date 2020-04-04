@@ -1,0 +1,7 @@
+CLEAN CODE
+Name of single = DONE
+Score limit
+Chat room = DONE
+Prevent selection when not able = DONE
+Typing in on blanks.
+

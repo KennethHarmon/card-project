@@ -1,14 +1,15 @@
 <%- include("partials/header") %>
 
-<div class="container-fluid mx-5 mt-3">
+<div class="container-fluid px-5 mt-3">
     <div class="row">
         <div class="col">
             <h1>Game Code: <%=  lobbycode%> </h1>
+            <h2 id="singleDisplay"></h2>
             <div id="leaderboard"></div>
             <br>
-            <button id="Start">Start Game</button>
-            <button id="ConfirmSelection">Confirm selection</button>
-            <p>Username: <%=username %> </p>
+            <button id="Start" class="btn btn-danger mb-4">Start Game</button>
+            <button id="ConfirmSelection" class="btn btn-danger mb-4">Confirm selection</button>
+            <div id="usernames"></div>
             <div id="status"></div>
         </div>
     </div>
@@ -17,12 +18,21 @@
     <h4 style="float: bottom;" id="instructions">Please choose two white cards: </h4>
     <div class="row" id="hand">
         <div id="overlay">
-            <h3 style="color: white; margin: 40px">You're the single</h3>
+            <h3 id ="overlayText" style="color: white; margin: 40px">You're the single</h3>
         </div>
+    </div>
+    <div id="messagescontainer" class="mt-4">
+        <h3>Chat:</h3>
+        <ul id="messages"></ul>
+        <form  id="messagesform" action="">
+            <input autocomplete="off" id="m"/><button>Send</button>
+        </form>
     </div>
 </div>
 
+
 <script>
+    ///////////////////////////////////////////Declare public variables////////////////////////////////////////
     var socket = io();
     var currentRoom = "";
     var numOfUsers = 0;
@@ -36,18 +46,20 @@
     
     //Parse query headers in URL
     function getUrlParameter(name) {
-    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-    var results = regex.exec(location.search);
-    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
     };
+
     var username = getUrlParameter("username");
     var lobbycode = getUrlParameter("lobbycode");
 
-    //Start
+    /////////////////////////////////////Start//////////////////////////////////////////////////////////////////
     socket.emit("newUser", {username: username, lobbycode: lobbycode})
-    socket.emit("connect to room", {room: lobbycode})
     
+
+    ///////////////////////////////////////////JQuery Event handlers////////////////////////////////////////////
     $("#Start").click(function(){
         socket.emit("Start game")
     });
@@ -60,51 +72,24 @@
     $("#ConfirmSelection").on("click", function() {
         console.log("Selecting")
         var selectedcards = [];
-        var wrongSelected = false;
-        var wrongCardAmount = false;
-
-        //Check if the wrong type of card has been selected
-        $(".selectedcard").each(function(index,el){
-            if(isWhiteRound === true){
-                if(el.classList.contains("gameredcard")){
-                console.log("Selected a red card");
-                wrongSelected = true;
-                }
-            }
-            else {
-                if(el.classList.contains("gamewhitecard")){
-                console.log("Selected wrong type of card card");
-                wrongSelected = true;
-                }
-            }
-        });
-
-        //Check if the wrong amount of cards have been selected
-        if((isWhiteRound && $(".selectedcard").length != 2) || (isWhiteRound === false && $(".selectedcard").length != 1) ) {
-                console.log("Selected wrong amount of cards");
-                wrongCardAmount = true;
-            }
+        var wrongTypeSelected = checkWrongTypeSelected();;
+        var wrongCardAmount = checkWrongCardAmount();
         
-        if(wrongSelected === false && wrongCardAmount === false) {
+        if(!wrongTypeSelected && !wrongCardAmount) {
             console.log("Hand okay");
             $(".selectedcard").each(function(index,el){
-                if(el.classList.contains("gamewhitecard")) {
-                    obj = {
-                        text: el.textContent,
-                        type: "white"
-                        }
+                var obj = {
+                    text: el.textContent
                 }
-                else {
-                    obj = {
-                        text: el.textContent,
-                        type: "red"
-                    }
-                }
-                
+                el.classList.contains("gamewhitecard") ? obj.type = "white" : obj.type = "red";
                 selectedcards.push(obj)
                 $(this).remove()
             });
             socket.emit("send hand",{selectedcards:selectedcards});
+            console.log("////////////////////////////");
+            $("#overlay").css("display","block");
+            console.log($("#overlayText").length);
+            $("#overlayText").html("Waiting for others to select");
         };
     });
 
@@ -119,29 +104,28 @@
     $("#handsdisplaytitle").on("click","#singlevote",function() {
         console.log("starting new round");
         socket.emit("start new round", {winner: playerList[currentCardDisplay]});
+    });
+
+    $("form").submit(function(e){
+        e.preventDefault();
+        socket.emit("chat message", $("#m").val())
+        $("#m").val("");
+        return false;
     })
 
+    /////////////////////////////////////////////////////////////Functions////////////////////////////////////////////////////////////
 
-
-    function changeRoom() {
-        var room = $("input").val();
-        socket.emit("connect to room", {room: room}) 
-    }
-
+    //Displays the players hand
     function displayHand(data) {
         var listItem = ""; 
         $.each( data.hand, function( i, item ) {
-            if (data.hand[i].type === "red") {
-                console.log(item)
-                listItem += "<div class='col-5 col-sm-3 col-lg-2 col-xl-1 gameredcard handcard'><p>" + item.text + "</p></div>";
-            } 
-            else {
-                listItem += "<div class='col-5 col-sm-3 col-lg-2 col-xl-1 gamewhitecard handcard'><p>" + item.text + "</p></div>";
-            }
+            var type = data.hand[i].type;
+            listItem += "<div class='col-5 col-sm-3 col-lg-2 col-xl-1 game" + type + "card handcard'><p>" + item.text + "</p></div>";
         });
-        $( "#hand" ).html("<div id='overlay'><h3 style='color: white; margin: 40px'>You're the single</h3></div>" + listItem);
+        $( "#hand" ).html("<div id='overlay'><h3 id='overlayText' style='color: white; margin: 40px'>You're the single</h3></div>" + listItem);
     };
 
+    //Shows the display of all other players hands
     function showCardDisplay(index) {
         if(currentCardDisplay === 0 && index === -1) {
             console.log("Error, can't go back.");
@@ -150,45 +134,85 @@
             console.log("Error, index too large.")
         }
         else {
+            //Add to the current card display
             currentCardDisplay += index;
+            
+            //Makes the html to display selected players hand
+            var holder = createPlayerDisplayHand(currentCardDisplay);
 
-            var holder = "<button id='back'><</button>"
-            for(let i = 0; i < handDisplay[playerList[currentCardDisplay]].length; i++) {
-                console.log(handDisplay[playerList[currentCardDisplay]]);
-                if(handDisplay[playerList[currentCardDisplay]][i]){
-                    if(handDisplay[playerList[currentCardDisplay]][i].type === "white") {
-                    holder += "<div class = 'col-5 col-sm-3 col-lg-2 col-xl-1 gamewhitecard'>" + handDisplay[playerList[currentCardDisplay]][i].text + "</div>";
-                    }
-                    else {
-                        holder += "<div class = 'col-5 col-sm-3 col-lg-2 col-xl-1 gameredcard'>" + handDisplay[playerList[currentCardDisplay]][i].text + "</div>"
-                    }
-                }
-                
-            }
-            holder += "<button id='forward'>></button>"
+            //Populate the hands display html
             $("#handsdisplay").html(holder);
+
+            //Check if they're single and hand selection is available and then show choose hand buttons
             if(isSingle && (Object.keys(handDisplay[playerList[currentCardDisplay]]).length === 3)) {
-                $("#handsdisplaytitle").html("<h4>" + playerList[currentCardDisplay] + "</h4><button id='singlevote'>Choose this hand</button>");
+                $("#handsdisplaytitle").html("<h4 style='display:inline-block'>" + playerList[currentCardDisplay] + "'s date: " + "</h4><button id='singlevote' class='btn btn-success mx-3'>Choose this hand</button>");
             }
             else {
-                $("#handsdisplaytitle").html("<h4>" + playerList[currentCardDisplay] + "</h4>");
+                $("#handsdisplaytitle").html("<h4 style='display:inline-block'>" + playerList[currentCardDisplay] + "'s date: " + "</h4>");
             };
         }
     };
 
+    //Makes the html for showing other players cards
+    function createPlayerDisplayHand(currentCardDisplay) {
+        var holder = "<button id='back' class='btn btn-dark'><</button>";
+        //Push cards into the display
+        for(let i = 0; i < handDisplay[playerList[currentCardDisplay]].length; i++) {
+            let currentCard = handDisplay[playerList[currentCardDisplay]][i];
+            if(currentCard){
+                var type = currentCard.type;
+                holder += "<div class = 'col-5 col-sm-3 col-lg-2 col-xl-1 game" + type + "card'>" + currentCard.text + "</div>";          
+            }
+        };
+        holder += "<button id='forward' class='btn btn-dark'>></button>";
+        return holder;
+    };
+
+    //Sets up UI for the single this round
     function setupforSingle() {
         $("#overlay").css("display", "block");
+        $("#overlayText").html("You're the single");
         isSingle = true;
-        console.log("IM SINGLE");
-        console.log("isSingle = " + isSingle);
-    }
+    };
 
+
+    //Populates the global player list
     function makePlayerList(hands) {
         var players = Object.keys(hands);
         playerList = players;
+    };
+
+    ///////////////////////////////////////////Hand verification///////////////////////////////////////////////////
+    function checkWrongTypeSelected() {
+        var hasWrongType = false;
+        //Check if the wrong type of card has been selected
+        $(".selectedcard").each(function(index,el){
+            if(isWhiteRound && el.classList.contains("gameredcard")){
+                console.log("Selected a red card in a white round.");
+                hasWrongType = true;
+            }
+            else if(!isWhiteRound && el.classList.contains("gamewhitecard")){
+                console.log("Selected a white card in a red round.");
+                hasWrongType = true;
+            }
+        });
+        return hasWrongType;
+    };
+
+    function checkWrongCardAmount() {
+        //Check if the wrong amount of cards have been selected
+        if((isWhiteRound && $(".selectedcard").length != 2) || (isWhiteRound === false && $(".selectedcard").length != 1) ) {
+                console.log("Selected wrong amount of cards");
+                return true;
+        }
+        else {return false};
     }
 
-    function makeLeaderBoard(playerList,winner) {
+
+    ///////////////////////////////////////////////Leaderboard functions///////////////////////////////////////////
+
+    function makeLeaderBoard(playerList) {
+        console.log("MakingLeaderBoard")
         var tempItem = "<h4>Leaderboard: ";
         console.log(playerList)
         playerList.forEach(element => {
@@ -212,14 +236,21 @@
         tempItem += "</h4>"
         $("#leaderboard").html(tempItem);
         console.log("LeaderBoard: "+ JSON.stringify(Leaderboard));
-    }
+    };
 
+
+    //////////////////////////////////////////////////Socket Events////////////////////////////////////////////////
     socket.on("deck", (data) => {
         displayHand(data);
     });
 
     socket.on("Youre single", function() {
+        $("#overlayText").html("You're the single");
         setupforSingle();
+    });
+
+    socket.on("single is", (data) => {
+        $("#singleDisplay").html("Single: " + data.single);
     });
 
     socket.on("send back hand", (data) => {
@@ -227,6 +258,13 @@
     })
 
     socket.on("next stage", (data) => {
+        if(!isSingle){
+            $("#overlay").css("display","none");
+        }
+        else {
+            $("#overlayText").html("You're the single");
+        }
+
         if(isWhiteRound) {
             handDisplay = data.hands;
             $("#instructions").text("Please pick a red card for someone else:");
@@ -236,7 +274,6 @@
             console.log("HandDisplay = " + JSON.stringify(handDisplay));
             let dataKeys = Object.keys(data.hands);
             for(let i = 0; i < (Object.keys(handDisplay).length); i++) {
-
                 data.hands[dataKeys[i]].forEach(element => {
                     handDisplay[dataKeys[i]].push(element);
                 });
@@ -250,8 +287,8 @@
         isWhiteRound  = !isWhiteRound;
     });
 
-    socket.on("make leaderboard", (data) => {
-        makeLeaderBoard(data.players);
+    socket.on("game started", () => {
+        $("#Start").css("display","none");
     });
 
     socket.on("clear singles", () => {
@@ -266,17 +303,22 @@
         $("#singlevote").remove();
         if(isSingle) { 
             $("#overlay").css("display","block")
+            $("#overlayText").html("You're the single.");
         }
         $("#handsdisplay").empty();
         $("#handsdisplaytitle").empty();
         updateLeaderBoard(data.winner,data.players);
     });
 
+    socket.on('chat message', function(data){
+      $('#messages').append('<li>' + "<strong>" + data.sender + ": " + "</strong>" + data.msg + "</li>");
+    });
+
     socket.on("connectedRoom", (data) => {
         console.log("User " + username + " has connected to " + data.room + " room")
+        makeLeaderBoard(data.players);
         currentRoom = data.room;
         numOfUsers++;
-        socket.emit("retrieve hand");
     });
 </script>  
 <%- include("partials/footer") %>
