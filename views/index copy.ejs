@@ -1,0 +1,49 @@
+<%- include("partials/header") %>
+<div class="container-fluid main tall">
+    <div class="row tall">
+        <div class="col-lg-6 tall red" id="mainleft">
+            <div id="redsection">
+                <h1 class="black display-1 main-title">Red</h1>
+                <form action="/game/new" method="POST" class="mt-5">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name = "username" placeholder="Enter username">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-lg  btn-secondary btn-block mt-3">Create Game</button>
+                        </div>
+                    </div>
+                </form>
+                <form action="/game/join" method="POST" class="mt-5">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name = "username" placeholder="Enter Username">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="text" name = "gameCode" placeholder="Enter game code">
+                    </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-lg  btn-secondary btn-block mt-3">Join Game</button>
+                        </div>      
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-6 tall black" id="mainright">
+            <div id="blacksection">
+                <h1 class="display-1 main-title red">Flags</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        if(screen.width <= 768) {
+            console.log("Small screen");
+            $("#redsection").html('<h1 class="black display-1 main-title mr-3">Red<span style="background-color: #343A40; color: #DC3546;" class="pb-2">Flags</span></h1><form action="/game/new" method="POST" class="mt-5 px-4"><div class="form-group"><input class="form-control" type="text" name = "username" placeholder="Enter username"><div class="form-group"><button type="submit" class="btn btn-lg  btn-secondary btn-block mt-3">Create Game</button></div></div></form><form action="/game/join" method="POST" class="mt-5 px-4"><div class="form-group"><input class="form-control" type="text" name = "username" placeholder="Enter Username"></div><div class="form-group"><input class="form-control" type="text" name = "gameCode" placeholder="Enter game code"></div><div class="form-group"><button type="submit" class="btn btn-lg  btn-secondary btn-block mt-3">Join Game</button></div></form>');
+            $("#blacksection").html("");
+        }
+        else {
+            console.log("Big screen");
+            $("#redsection").html('<h1 class="black display-1 main-title">Red</h1><form action="/game/new" method="POST" class="mt-5"><div class="form-group"><input class="form-control" type="text" name = "username" placeholder="Enter username"><div class="form-group"><button type="submit" class="btn btn-lg  btn-secondary btn-block mt-3">Create Game</button></div></div></form>');
+            $("#blacksection").html('<h1 class="display-1 main-title red">Flags</h1><form action="/game/join" method="POST" class="mt-5"><div class="form-group"><input class="form-control" type="text" name = "username" placeholder="Enter Username"></div><div class="form-group"><input class="form-control" type="text" name = "gameCode" placeholder="Enter game code"></div><div class="form-group"><button type="submit" class="btn btn-lg  btn-secondary btn-block mt-3">Join Game</button></div></form>');
+        };
+    });
+</script>
+<%- include("partials/footer") %>

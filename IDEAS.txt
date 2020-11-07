@@ -1,7 +1,9 @@
 CLEAN CODE
-Name of single = DONE
-Score limit
-Chat room = DONE
-Prevent selection when not able = DONE
-Typing in on blanks.
+Score limit.
+
+
+
+Catches/bugs
+Allow users to join midway
+
 

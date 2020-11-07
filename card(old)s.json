@@ -2,1955 +2,1565 @@
     "White": [
         {
             "text": "Courteous",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Beautiful eyes",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Owns your favourite sports team",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Owns a time machine",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Knows everything about _____",
-            "type": "white",
-            "hasBlank": "TRUE"
+            "type": "white"
         },
         {
             "text": "Lives off the grid",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Loves dogs",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Volunteers with elderly people",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Owns an adorable coffee shop",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Creates shelters for the homeless",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Supermodel",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Stunt double",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "YouTube Celebrity",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Airline pilot",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Owns real dinosaurs",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Is never gonna give you up Let you down Run around Or desert you",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Bestselling author",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Spin instructor",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Their kisses cure cancer",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Looks exactly like _____",
-            "type": "white",
-            "hasBlank": "TRUE"
+            "type": "white"
         },
         {
             "text": "Always knows how to stop you crying",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Same favourite books",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Same favourite music",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Loves staying in",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Has the hottest friends",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Owns 100 horses",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Owns a vineyard in Italy",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Can get you free drinks forever anywhere",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Adventurous",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Perfect amount of physical affection",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Volunteers for _____",
-            "type": "white",
-            "hasBlank": "TRUE"
+            "type": "white"
         },
         {
             "text": "Has a cellar full of _____",
-            "type": "white",
-            "hasBlank": "TRUE"
+            "type": "white"
         },
         {
             "text": "Is a genie",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Loves the `80s",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Has a twin",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Knows all thw words to your favourite childhood TV theme songs",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Porn star",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Makes scented candles",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Is a merperson",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Your parents love them",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Has an 8-pack",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Gives billions to your favourite charity",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Famous movie star",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Is a night person and a morning person",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Loves to laugh",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Completely blind to all your flaws",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Ski instructor",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Affectionate",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Can talk to animals",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Your friends and enemies are jealous of them",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Famous rapper",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Funniest person in the world",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Really into wine",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Can fly",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Animal shelter volunteer",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Pick an actor/actress",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Honest",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Loves cats",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Model",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Owns your favourite museum",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "You will never gain weight while you date them",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Rodeo champion",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Gives you multiple orgasms",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Has front row seats at every sporting event",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Lawyer",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Won the medal of honor",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Has the most attractive _____ you've ever seen",
-            "type": "white",
-            "hasBlank": "TRUE"
+            "type": "white"
         },
         {
             "text": "Owns a penthouse suite in your favourite city",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Lumberjack",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Makes you feel secure",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Spontaneous and fun!",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Owns an island in the Bahamas",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "College English professor",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "An amazing dancer",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Never blames you for anything",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "You literally will not age while you date them",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "World champion _____",
-            "type": "white",
-            "hasBlank": "TRUE"
+            "type": "white"
         },
         {
             "text": "Always defends you",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Loves theatre",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Cooks all your favourite foods",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Generous",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Their morning breath smells like fresh baked cookies",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Can fire your most hated co-worker or boss",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Most physically attractive person you have ever seen",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Has the voice of an angel",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Genius-level IQ",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Can get you a table at any 5-star restarant any time any place",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Firefighter",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Gives great massages",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Owns a 500-foot yacht",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Same favourite movies",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "You'll never get sick while you date them",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Best sex ever",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Their farts smell like flowers",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Owns mars",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "In touch with their feelings",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Loves sports",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Never arrives prematurely",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Loves the outdoors",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Professional wrestler",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Rocket scientist",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Lives in a castles",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Professional chef",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Has a mention in _____",
-            "type": "white",
-            "hasBlank": "TRUE"
+            "type": "white"
         },
         {
             "text": "Good listener",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Famous artist",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Can get you into literally anywhere",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Always has tickets for wherever you want to go",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Has the best hair ever",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Is royalty",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Believes you are the most attractive person they've ever seen",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Trusting",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Can multiply themselves ",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Loves video games ",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Same favourite foods",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Supportive",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "The lead singer of your favourite band",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Can fly",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "CEO",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Marine ",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Never farts",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Loves you unconditionally",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Is a professional _____",
-            "type": "white",
-            "hasBlank": "TRUE"
+            "type": "white"
         },
         {
             "text": "Owns a _____",
-            "type": "white",
-            "hasBlank": "TRUE"
+            "type": "white"
         },
         {
             "text": "Is a great conversationalist",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Lives on 100 beachfront acres",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Superhero",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Photographer",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Organic farmer",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Famous musician",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Owns a unicorm",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Gives the best hugs",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Best-smelling person in the world",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Professional surfer",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Perfect communicator",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "World's best hair stylist",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Fiercely loyal",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Loves to cuddle",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Has a magic bag that conatins unlimited cheese",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Travels a lot and will bring you",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Owns a successful startup",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "The hot barista",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Famous fashion designer",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Owns a goose that lays designer clothing ",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Owns one of every car",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Respectful",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Has front row tickets to every concert",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Always gives you perfect gifts",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Has all the same hobbies as you",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "World champion hunter",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Patient",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Driven",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Passionate ",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Reliable",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Their life is the one that _____ is based on",
-            "type": "white",
-            "hasBlank": "TRUE"
+            "type": "white"
         },
         {
             "text": "Millionaire",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Olwympic gymnast",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "You'll never have to work while you date them",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Always smells like _____ ",
-            "type": "white",
-            "hasBlank": "TRUE"
+            "type": "white"
         },
         {
             "text": "Park ranger",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Owns a solid gold private jet",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "World's best advertising executive ",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Was on the news for rescuing a kitten",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Brain surgeon",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Loves their job",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Yoga instructor",
-            "type": "white",
-            "hasBlank": "FALSE"
+            "type": "white"
         },
         {
             "text": "Drives a _____",
-            "type": "white",
-            "hasBlank": "TRUE"
+            "type": "white"
         }
     ],
     "Red": [
         {
             "text": "Has a dozen kids from a dozen partners ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is 40 years older than they were in their profile picture ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Uses way way way too much tongue ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Steals something from every store they enter ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Looks and smells just like your dad ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Says \"like\", like all the time ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Their kisses taste like poop..... and they love kissing ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is wanted in every state except Florida ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Amateur vigilante ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Swears they're eighteen ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Only speaks in hashtags ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Demands to pop all of your zits for you ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is your clone ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Literally won't talk to you if you're part of the wrong Hogwarts house ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Only speaks in horrible puns ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Teleports to the North Pole every time they say the word \"love\" ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Only speaks in Disney song lyrics ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Calls you a \"4\" to your face ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Has the names of all of their exes tattooed on their face ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Repeats your jokes but louder ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is eligible for the Make-A-Wish Foundation ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is a merperson ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Conveniently forgets wallet every date night, Always has I.D. though",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is literally always watching porn ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Worst-smelling person in the world ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Laughs incessantly during sex ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Literally has the face of a pug ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Tries to pay for everything with farm animals ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Sees the ghost of everyone who has ever died ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Only speaks in yelling ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Only speaks in yodelling ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is actually two children stacked on top of each other in a trench coat ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Refuses to cover face while sneezing ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Won't stop juggling ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Has half a beard ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Absolutely refuses to shave ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Says \"Can you not\" while you at a funeral  ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Counts your calories ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Will only eat if you play airplane with their food ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Still really into Myspace ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is NIckelback ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "50 Shades of Grey is literally the only book they've read ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Tells you to calm down after everything you say ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Has slept with literally everyone ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Writes erotic Lassie fan fiction ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Has nineteen kids and counting ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Has plexiglass cheeks so that you can see inside their mouth ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Men's rights activist ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Can only eat out of someone else's hand ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Sleep-puncher ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Puts \"air quotes\" around \"every word\" they say ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Keeps talking about someone who looks just like you, Only better!",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Keeps asking if your best friend Is \"down\". ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Posts all of your texts and messages online ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Super clingy ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Incapable of all emotion ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Always bragging about past sexual conquests ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Lives in a bedroom with eight dudes, Including one named \"Jug\" ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Only speaks in business buzzwords ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Calls their pets their children ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Only eats deep-fried food ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Literally only talks about themselves ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Literally won't stop talking about their mother ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "The two halves of their face don't match. Both are attractive but look totally different ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Talks dirty to all of their food ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Has a _____ fetish ",
-            "type": "red",
-            "hasBlank": "TRUE"
+            "type": "red"
         },
         {
             "text": "Is literally always naked",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Doesn't know the difference between your and you're ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is a hobbit ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "You are allergic to them ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Thinks Twilight deserved an Oscar ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Starts every sentence with \"actually\" ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Amateur cannibal ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Has a permanent fedora ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is always covered in ants ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Yells \"ear muffs!\" whenever they hear a bad word ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Still in second year ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is allergic to all of your favorite foods ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Thinks they're smarter than you ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Dabbles in torture ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Always wearing a Bluetooth headset ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Always wears a luchador mask ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Keeps changing the subject to talk about how not racist they are ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is a 60 year old virgin ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Sells home-made pubic hair wigs ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "As long as you date them you can only eat food off the dollar menu ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Uses the word \"chillax\" in every sentence ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Really stupid ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Only laughs at their own jokes ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is dead ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is totally married ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Literally can't make decisions ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Spends every date using dating apps ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Body type: Dumpster ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Owes the government one million dollars ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Really really hates children ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Collects human skulls, says they're \"practically free!\" ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Wears diapers because it's \"more convenient\" ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Sold your pets on Craigslist ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Tinders during sex ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Thinks you're ugly ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Death row inmate ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Only wears clothing made of human hair ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Rigged to a time bomb ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Just got out of prison........but won't tell you what they were in for ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Refuses to look up from phone ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Compulsively licks windows ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Has never spelled a word corectly ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Name drops during dirty talk ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Refuses to wash hands ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Throws up every time they see your face ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "In a band called \"Genocide Warts\" ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Immediately tries to kill you with a fork ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Backseat driver ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Eats crayons ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Compulsive liar ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Always dresses like a clown ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Only communicates with you via fax ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Hair is transplanted from cadaver butts ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Steals locks of your hair ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Constantly plotting to kill you ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Zero percent sexually attractive to you ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Farts every time they kiss you ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is related to you ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Greets people by sniffing their butts ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Greets you with a headbutt ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Can't keep a job longer than twenty minutes ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Literally always Only has eyes for you........They literally can't see anyone in the world except you ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is a train wreck ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Only speaks in sarcasm ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Takes you to _____ on the first date ",
-            "type": "red",
-            "hasBlank": "TRUE"
+            "type": "red"
         },
         {
             "text": "Live-tweets your entire date ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Their pet name for you is \"dishwasher\" ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Brings mom to first date ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Yawns every time you start a sentence ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Static shocks you every time you touch ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is addicted to prescription drugs ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is six years old ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Doesn't understand your jokes ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "3-foot fingernails ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is building an ark ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Brings ex to first date ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Melts if they get wet",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Literally never stops talking ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is a serial killer ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Reads over your shoulder (out loud) ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Doesn't believe in oral sex ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "First name is \"poop\" ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Isn't toilet trained ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Describes all food as \"yummy yummers\" ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Open mouth kisses their siblings ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "College nickname: Puke Crotch ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is the person you hated the most in high school........ and literally hasn't changed ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is a zombie ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Only speaks in boy band lyrics ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Adds you as an emergency contact on the first date ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Always picking their nose ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Has been stalking you since middle school ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Doesn't like music...any of it ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Kicks every animal they see ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Burps and blows in your face ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "For as long as you date them all your friends will hate you ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Takes you to couples therapy on the first date ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Has scissor hands ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Has a superpower. It's seeing through people's clothes  ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Constantly trying to bang your friends ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is on every fad diet at the same time ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Physically incapable of asking a question ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Knocks things out of strangers' hands while walking down the street ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is the oldest living person ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Snorts _____. Really wants you to try it",
-            "type": "red",
-            "hasBlank": "TRUE"
+            "type": "red"
         },
         {
             "text": "Still uses a flip phone ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Winks at you after everything you say ;) ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Refuses to delete online dating profile ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Wears a backpack full of _____ during sex ",
-            "type": "red",
-            "hasBlank": "TRUE"
+            "type": "red"
         },
         {
             "text": "Swears you look exactly like their sister ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "But says \"that's a good thing\" ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Never stops playing the ukelele ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Slept with one of your parents. Recently. ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Has two other spouses ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Hits on every server ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is addicted to crack",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Uses cockpuppets ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Constantly hosts tea parties for dolls ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Can only have conversations through puppets ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Constantly freestyle raps........ Badly ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Calls you by exe's name........ Every time ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is a revenge porn mogul ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Only responds to texts with \"k\" ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Refers to their genitals as their \"no-no\" ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Lives off the grid ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Literally always on a Segway ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Jealous of your Pet ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Texts exclusively in emojis ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Charges you 50c every time you say a curse word ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Open mouth kisses their pets ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Constantly taking selfies ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Every time you think about them you dry heave ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Afraid of sunlight ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Their sex tape with just went viral ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Resting dumb face ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Ends every conversation with \"you're dismissed\" ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Civil War reenactor ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Doesn't know or understand any word that starts with the letter \"D\" ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Recites all the lines from \"Titanic\" in their sleep ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Narrates everything they do outloud ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is a vampire... Not the sexy kind ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Keeps talking about their \"hot cousin\"",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Sexist ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Doesn't think women should vote ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Has _____ for hands ",
-            "type": "red",
-            "hasBlank": "TRUE"
+            "type": "red"
         },
         {
             "text": "Always takes the joke three steps too far ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Is afraid of stoplights ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Thinks they're a Jedi ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Has to pee every five minutes for five minutes ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Speaks with a constantly changing foreign accent ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Super super racist ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Celibate ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Only speaks Klingon",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Responds to everything you say with \"that's what she said\"",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Cries themself to deep every night ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Basic ",
-            "type": "red",
-            "hasBlank": "FALSE"
+            "type": "red"
         },
         {
             "text": "Can only speak in lines from _____",
-            "type": "red",
-            "hasBlank": "TRUE"
+            "type": "red"
         }
     ]
 }
