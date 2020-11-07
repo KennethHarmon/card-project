@@ -3,11 +3,12 @@
 <div class="container-fluid px-5 mt-3">
     <div class="row">
         <div class="col">
-            <h1>Game Code: <%=  lobbycode%> </h1>
+            <a href="http://cardparty.ie"><i class="fa fa-home" style="font-size:50px; color: black;"></i></a>
+            <h1 style="display: inline-block;">Game Code: <%=  lobbycode%> </h1>
             <h2 id="singleDisplay"></h2>
             <div id="leaderboard"></div>
+            <h4 id="scoreLimit"></h4>
             <br>
-            <button id="Start" class="btn btn-danger mb-4">Start Game</button>
             <button id="ConfirmSelection" class="btn btn-danger mb-4">Confirm selection</button>
             <div id="usernames"></div>
             <div id="status"></div>
@@ -15,6 +16,7 @@
     </div>
     <div id="handsdisplaytitle"></div>
     <div class="row mt-4" id="handsdisplay"></div>
+    <br>
     <h4 style="float: bottom;" id="instructions">Please choose two white cards: </h4>
     <div class="row" id="hand">
         <div id="overlay">
@@ -39,6 +41,7 @@
     var handDisplay;
     var cardDisplayIndex = 0;
     var playerList;
+    var lobbyPlayers;
     var currentCardDisplay = 0;
     var isWhiteRound = true;
     var isSingle = false;
@@ -61,7 +64,13 @@
 
     ///////////////////////////////////////////JQuery Event handlers////////////////////////////////////////////
     $("#Start").click(function(){
-        socket.emit("Start game")
+        if(Object.keys(Leaderboard).length < 3){
+            $('#messages').append('<li style="color:blue">' + "<strong>Game: </strong>" + "You need at least three people to start a game." + "</li>");
+            $("#messages").scrollTop($('#messages').prop('scrollHeight'));
+        }
+        else {
+            socket.emit("Start game")
+        }
     });
 
     $("#hand").on('click','.handcard',function(){
@@ -70,7 +79,6 @@
     });
 
     $("#ConfirmSelection").on("click", function() {
-        console.log("Selecting")
         var selectedcards = [];
         var wrongTypeSelected = checkWrongTypeSelected();;
         var wrongCardAmount = checkWrongCardAmount();
@@ -78,17 +86,20 @@
         if(!wrongTypeSelected && !wrongCardAmount) {
             console.log("Hand okay");
             $(".selectedcard").each(function(index,el){
+                var tempText = el.textContent;
+                if(el.classList.contains("blank")){
+                    var blank = prompt("Fill in the blank:");
+                    tempText = tempText.replace("_____", blank);
+                }
                 var obj = {
-                    text: el.textContent
+                    text: tempText
                 }
                 el.classList.contains("gamewhitecard") ? obj.type = "white" : obj.type = "red";
                 selectedcards.push(obj)
                 $(this).remove()
             });
             socket.emit("send hand",{selectedcards:selectedcards});
-            console.log("////////////////////////////");
             $("#overlay").css("display","block");
-            console.log($("#overlayText").length);
             $("#overlayText").html("Waiting for others to select");
         };
     });
@@ -120,7 +131,12 @@
         var listItem = ""; 
         $.each( data.hand, function( i, item ) {
             var type = data.hand[i].type;
-            listItem += "<div class='col-5 col-sm-3 col-lg-2 col-xl-1 game" + type + "card handcard'><p>" + item.text + "</p></div>";
+            if(data.hand[i].hasBlank === "TRUE"){
+                listItem += "<div class='col-5 col-sm-3 col-lg-2 col-xl-1 game" + type + "card handcard blank'><p>" + item.text + "</p></div>";
+            }
+            else{
+                listItem += "<div class='col-5 col-sm-3 col-lg-2 col-xl-1 game" + type + "card handcard'><p>" + item.text + "</p></div>";
+            }
         });
         $( "#hand" ).html("<div id='overlay'><h3 id='overlayText' style='color: white; margin: 40px'>You're the single</h3></div>" + listItem);
     };
@@ -161,7 +177,7 @@
             let currentCard = handDisplay[playerList[currentCardDisplay]][i];
             if(currentCard){
                 var type = currentCard.type;
-                holder += "<div class = 'col-5 col-sm-3 col-lg-2 col-xl-1 game" + type + "card'>" + currentCard.text + "</div>";          
+                holder += "<div class = 'col-4 col-sm-3 col-lg-2 col-xl-1 game" + type + "card'>" + currentCard.text + "</div>";          
             }
         };
         holder += "<button id='forward' class='btn btn-dark'>></button>";
@@ -180,6 +196,21 @@
     function makePlayerList(hands) {
         var players = Object.keys(hands);
         playerList = players;
+    };
+
+    function resetGame(){
+        $("#hand").empty();
+        $("#overlay").css("display","none")
+        $("#overlayText").html("");
+        $("#handsdisplay").empty();
+        $("#handsdisplaytitle").empty();
+        $("#singlevote").remove();
+        $("#Start").css("display","inline-block");
+        $("#singleDisplay").empty();
+        $("#scoreLimitInputGroup").css("display","inline-block");
+        Leaderboard = {};
+        makeLeaderBoard(lobbyPlayers);
+        isSingle = false;
     };
 
     ///////////////////////////////////////////Hand verification///////////////////////////////////////////////////
@@ -212,7 +243,7 @@
     ///////////////////////////////////////////////Leaderboard functions///////////////////////////////////////////
 
     function makeLeaderBoard(playerList) {
-        console.log("MakingLeaderBoard")
+        console.log("Making LeaderBoard")
         var tempItem = "<h4>Leaderboard: ";
         console.log(playerList)
         playerList.forEach(element => {
@@ -221,21 +252,43 @@
         });
         tempItem += "</h4>"
         $("#leaderboard").html(tempItem);
-        console.log("LeaderBoard: "+ JSON.stringify(Leaderboard));
     };
 
-    function updateLeaderBoard(winner,playerList){
+    function updateLeaderBoard(playerList,winner){
         var tempItem = "<h4>Leaderboard: ";
         console.log(playerList)
         playerList.forEach(element => {
-            if(element === winner) {
+            if(winner){
+                if(element === winner) {
                 Leaderboard[element]++;
+                }
             }
+
             tempItem += element + ": " + Leaderboard[element] + " "
         });
         tempItem += "</h4>"
         $("#leaderboard").html(tempItem);
-        console.log("LeaderBoard: "+ JSON.stringify(Leaderboard));
+    };
+
+    function checkWinner(){
+        console.log("Checking winner");
+        playerList.forEach(element => {
+            console.log("Leaderboard: " + JSON.stringify(Leaderboard))
+            console.log("LEaderboard el: " + Leaderboard[element]);
+            console.log("Element: " + element);
+            console.log("Score limit " + scoreLimit);
+            if(Leaderboard[element] == scoreLimit){
+                console.log("WINNER 1");
+                weHaveAWinner(element);
+            }
+        });
+    };
+
+    function weHaveAWinner(username){
+        console.log("WINNER 2");
+        $('#messages').append('<li style="color:green">' + "<strong>Game: </strong>" + username + " Wins!!!!!!" + "</li>");
+        $("#messages").scrollTop($('#messages').prop('scrollHeight'));
+        resetGame();
     };
 
 
@@ -270,15 +323,12 @@
             $("#instructions").text("Please pick a red card for someone else:");
         }
         else {
-            console.log("Data hands: " + JSON.stringify(data.hands));
-            console.log("HandDisplay = " + JSON.stringify(handDisplay));
             let dataKeys = Object.keys(data.hands);
             for(let i = 0; i < (Object.keys(handDisplay).length); i++) {
                 data.hands[dataKeys[i]].forEach(element => {
                     handDisplay[dataKeys[i]].push(element);
                 });
             }
-            console.log("HandDisplay = " + JSON.stringify(handDisplay));
             $("#instructions").text("Please pick two white cards to make a date for the single:");
         }
         cardDisplayIndex = 0;
@@ -289,6 +339,11 @@
 
     socket.on("game started", () => {
         $("#Start").css("display","none");
+    });
+
+    socket.on("scorelimit", (data) => {
+        scoreLimit = data;
+        $("#scoreLimit").html("Score limit: " + data);
     });
 
     socket.on("clear singles", () => {
@@ -307,18 +362,57 @@
         }
         $("#handsdisplay").empty();
         $("#handsdisplaytitle").empty();
-        updateLeaderBoard(data.winner,data.players);
+        if(data.winner){
+            updateLeaderBoard(data.players,data.winner);
+        }
+        lobbyPlayers = data.players;
+        checkWinner();
     });
 
     socket.on('chat message', function(data){
+        console.log("Sender: " + data.sender + " Message: " + data.msg);
       $('#messages').append('<li>' + "<strong>" + data.sender + ": " + "</strong>" + data.msg + "</li>");
+      $("#messages").scrollTop($('#messages').prop('scrollHeight'));
     });
 
     socket.on("connectedRoom", (data) => {
-        console.log("User " + username + " has connected to " + data.room + " room")
+        $('#messages').append('<li style="color:blue">' + "<strong>Game: </strong>" + data.username + " has connected." + "</li>");
+        $("#messages").scrollTop($('#messages').prop('scrollHeight'));
         makeLeaderBoard(data.players);
         currentRoom = data.room;
         numOfUsers++;
     });
+
+    socket.on("player disconnected", (data) => {
+        lobbyPlayers.splice(lobbyPlayers.indexOf(data.username), 1);
+        $('#messages').append('<li style="color:red">' + "<strong>Game: </strong>" + data.username + " has left the game." + "</li>");
+        if( $("#Start").css('display') == 'none') {
+            $('#messages').append('<li style="color:red">' + "<strong>Game: </strong>" + "Skipping round." + "</li>");
+            if(isWhiteRound){
+                socket.emit("restart round", {whites:0});
+            }
+            else{
+                socket.emit("restart round", {whites:2});
+            }
+        };
+        updateLeaderBoard(data.players)
+        $("#messages").scrollTop($('#messages').prop('scrollHeight'));
+    });
+
+    socket.on("invalid lobby", (players) => {
+        $('#messages').append('<li style="color:red">' + "<strong>Game: </strong>" + "ERROR, lobby is invalid, too few players, ending game." + "</li>");
+        $("#messages").scrollTop($('#messages').prop('scrollHeight'));
+        $("#hand").empty();
+        $("#overlay").css("display","none")
+        $("#overlayText").html("");
+        $("#handsdisplay").empty();
+        $("#handsdisplaytitle").empty();
+        $("#singlevote").remove();
+        $("#Start").css("display","inline-block");
+        $("#singleDisplay").empty();
+        Leaderboard = {};
+        makeLeaderBoard(players);
+        isSingle = false;
+    })
 </script>  
 <%- include("partials/footer") %>
