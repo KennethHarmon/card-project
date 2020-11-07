@@ -10,12 +10,12 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KennethHarmon/card-app.git"
+    "url": "git+https://github.com/KennethHarmon/card-project.git"
   },
   "bugs": {
-    "url": "https://github.com/KennethHarmon/card-app/issues"
+    "url": "https://github.com/KennethHarmon/card-project/issues"
   },
-  "homepage": "https://github.com/KennethHarmon/card-app#readme",
+  "homepage": "https://github.com/KennethHarmon/card-project#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
     "cardcast-api": "^0.2.3",
