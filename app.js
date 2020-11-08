@@ -410,8 +410,11 @@ function checkNextRound(lobbycode) {
       }
     }
     var division = (cardTotal/((lobbyList[lobbycode].players.length)-1));
-    if(division === 2 || division === 1  ) {
-      io.to(lobbycode).emit("next stage", {hands: lobbyList[lobbycode].handsInPlay})
+    if(division === 2) {
+      io.to(lobbycode).emit("finished white stage", {hands: lobbyList[lobbycode].handsInPlay});
+    }
+    else if (division === 1) {
+      io.to(lobbycode).emit("finished red stage", {hands: lobbyList[lobbycode].handsInPlay});
     }
   }
 };

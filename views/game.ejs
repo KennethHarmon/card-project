@@ -27,7 +27,7 @@
         <h3>Chat:</h3>
         <ul id="messages"></ul>
         <form  id="messagesform" action="">
-            <input autocomplete="off" id="m"/><button>Send</button>
+            <input autocomplete="off" id="m"/><button class="col-3">Send</button>
         </form>
     </div>
 </div>
@@ -43,7 +43,7 @@
     var playerList;
     var lobbyPlayers;
     var currentCardDisplay = 0;
-    var isWhiteRound = true;
+    var stage = "white";
     var isSingle = false;
     var Leaderboard = {};
     
@@ -74,7 +74,6 @@
     });
 
     $("#hand").on('click','.handcard',function(){
-        console.log("Clicked card")
         $( this ).toggleClass("selectedcard");
     });
 
@@ -217,12 +216,14 @@
     function checkWrongTypeSelected() {
         var hasWrongType = false;
         //Check if the wrong type of card has been selected
+
         $(".selectedcard").each(function(index,el){
-            if(isWhiteRound && el.classList.contains("gameredcard")){
+            console.log("stage: " + stage);
+            if(stage == "white" && el.classList.contains("gameredcard")){
                 console.log("Selected a red card in a white round.");
                 hasWrongType = true;
             }
-            else if(!isWhiteRound && el.classList.contains("gamewhitecard")){
+            else if (stage == "red" && el.classList.contains("gamewhitecard")){
                 console.log("Selected a white card in a red round.");
                 hasWrongType = true;
             }
@@ -232,8 +233,9 @@
 
     function checkWrongCardAmount() {
         //Check if the wrong amount of cards have been selected
-        if((isWhiteRound && $(".selectedcard").length != 2) || (isWhiteRound === false && $(".selectedcard").length != 1) ) {
-                console.log("Selected wrong amount of cards");
+        if((stage == "white" && $(".selectedcard").length != 2) || (stage == "red" && $(".selectedcard").length != 1) ) {
+            $('#messages').append('<li style="color:red">Error! Selected wrong number of cards</li>');
+            $("#messages").scrollTop($('#messages').prop('scrollHeight'));
                 return true;
         }
         else {return false};
@@ -308,33 +310,47 @@
 
     socket.on("send back hand", (data) => {
         displayHand(data);
-    })
+    });
 
-    socket.on("next stage", (data) => {
-        if(!isSingle){
-            $("#overlay").css("display","none");
-        }
-        else {
+    socket.on("finished white stage", (data) => {
+        console.log(stage)
+        handDisplay = data.hands;
+        if(isSingle){
             $("#overlayText").html("You're the single");
         }
-
-        if(isWhiteRound) {
-            handDisplay = data.hands;
+        else {
+            $("#overlay").css("display","none");
             $("#instructions").text("Please pick a red card for someone else:");
         }
+
+        cardDisplayIndex = 0;
+        makePlayerList(data.hands);
+        showCardDisplay(cardDisplayIndex);
+        stage = "red";
+    });
+
+    socket.on("finished red stage", (data) => {
+        console.log("Stage: " + stage)
+        if(!isSingle){
+            $("#overlayText").html("You're the single");
+        }
         else {
-            let dataKeys = Object.keys(data.hands);
+            $("#overlay").css("display","none");
+        }
+
+        console.log("Data hands: " + JSON.stringify(data.hands));
+        console.log("HandDisplay = " + JSON.stringify(handDisplay));
+        let dataKeys = Object.keys(data.hands);
             for(let i = 0; i < (Object.keys(handDisplay).length); i++) {
                 data.hands[dataKeys[i]].forEach(element => {
                     handDisplay[dataKeys[i]].push(element);
                 });
-            }
-            $("#instructions").text("Please pick two white cards to make a date for the single:");
-        }
+            };
+
         cardDisplayIndex = 0;
         makePlayerList(data.hands);
         showCardDisplay(cardDisplayIndex);
-        isWhiteRound  = !isWhiteRound;
+        stage = "white";
     });
 
     socket.on("game started", () => {
@@ -359,6 +375,9 @@
         if(isSingle) { 
             $("#overlay").css("display","block")
             $("#overlayText").html("You're the single.");
+        }
+        else {
+            $("#instructions").text("Please pick two white cards to make a date for the single:");
         }
         $("#handsdisplay").empty();
         $("#handsdisplaytitle").empty();
@@ -388,7 +407,7 @@
         $('#messages').append('<li style="color:red">' + "<strong>Game: </strong>" + data.username + " has left the game." + "</li>");
         if( $("#Start").css('display') == 'none') {
             $('#messages').append('<li style="color:red">' + "<strong>Game: </strong>" + "Skipping round." + "</li>");
-            if(isWhiteRound){
+            if(stage = "white"){
                 socket.emit("restart round", {whites:0});
             }
             else{
