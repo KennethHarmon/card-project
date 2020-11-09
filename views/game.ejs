@@ -81,8 +81,9 @@
         var selectedcards = [];
         var wrongTypeSelected = checkWrongTypeSelected();;
         var wrongCardAmount = checkWrongCardAmount();
+        var wrongStage = checkSelectionStage();
         
-        if(!wrongTypeSelected && !wrongCardAmount) {
+        if(wrongTypeSelected == false && wrongCardAmount == false && wrongStage == false) {
             console.log("Hand okay");
             $(".selectedcard").each(function(index,el){
                 var tempText = el.textContent;
@@ -241,6 +242,16 @@
         else {return false};
     }
 
+    function checkSelectionStage() {
+        console.log("Stage: " + stage);
+        if(stage == "selection") {
+            $('#messages').append('<li style="color:red">Error! Cannot submit cards. Waiting for the single to pick a winner</li>');
+            $("#messages").scrollTop($('#messages').prop('scrollHeight'));
+            return true;
+        }
+        else {return false};
+    }
+
 
     ///////////////////////////////////////////////Leaderboard functions///////////////////////////////////////////
 
@@ -331,11 +342,11 @@
 
     socket.on("finished red stage", (data) => {
         console.log("Stage: " + stage)
-        if(!isSingle){
+        if(isSingle){
             $("#overlayText").html("You're the single");
         }
         else {
-            $("#overlay").css("display","none");
+            $("#overlayText").html("Waiting for single to pick a winning hand");
         }
 
         console.log("Data hands: " + JSON.stringify(data.hands));
@@ -350,7 +361,7 @@
         cardDisplayIndex = 0;
         makePlayerList(data.hands);
         showCardDisplay(cardDisplayIndex);
-        stage = "white";
+        stage = "selection";
     });
 
     socket.on("game started", () => {
@@ -371,6 +382,9 @@
 
     socket.on("new round started", function(data) {
         console.log("New round Started.")
+
+        stage = "white";
+
         $("#singlevote").remove();
         if(isSingle) { 
             $("#overlay").css("display","block")
