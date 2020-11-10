@@ -8,6 +8,3 @@ This project is built on Node.js using socket.io to coordinate realtime gameplay
 
 ## Gameplay
 The gameplay is pretty straightforward and uses the same rules as the card game. Just create a lobby and a code will be generated which you can give to other users to join. A randomly selected single person is chosen and the others have to try and create the best date for them using their available white cards. However once the white cards are played you each choose a red card to sabotage your opponents and make your date seem (relatively) better.
-
-## Conclusion
-Overall I learned a lot from this project about realtime variables, game logic and different technologies I hadn't used before.
