@@ -35,7 +35,7 @@ app.get("/game", function(req,res) {
     if(lobbyList[req.query.lobbycode].players.includes(req.query.username)){
       console.log("and player is included");
       console.log(lobbyList[req.query.lobbycode].players);
-      if(req.query.isHost === "true"){
+      if(checkIsUserHost(req.query.username)  == true){
         res.render("gameHost", {username: req.query.username, lobbycode: req.query.lobbycode});
       }
       else{
@@ -53,7 +53,7 @@ app.get("/game", function(req,res) {
 
 //Join Game
 app.post("/game/join", function(req,res) {
-  var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
+  var ip = req.header('x-forwarded-for') || req.socket.remoteAddress;
   var username = req.body.username.trim().toLowerCase();
   var gameCode = req.body.gameCode;
 
@@ -66,9 +66,9 @@ app.post("/game/join", function(req,res) {
   if (!userDoesExist && lobbyExists && !gameStarted) {
     console.log("No user exists");
     console.log("Lobby does exist");
-    createPlayer(username, ip);
+    createPlayer(username, ip, false);
     addToLobby(username,gameCode);
-    res.redirect("/game?username=" + username + "&lobbycode=" + gameCode + "&isHost=false");
+    res.redirect("/game?username=" + username + "&lobbycode=" + gameCode);
   }
   else if(!lobbyExists){
     console.log("Lobby doesnt exist. Can't add user");
@@ -86,7 +86,7 @@ app.post("/game/join", function(req,res) {
 
 //Create a new game
 app.post('/game/new', function(req, res){
-  var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
+  var ip = req.header('x-forwarded-for') || req.socket.remoteAddress;
   var username = req.body.username.toLowerCase();
 
   var doesExist = checkUserExists(username);
@@ -96,10 +96,10 @@ app.post('/game/new', function(req, res){
   }
   else {
     console.log("No user exists")
-    createPlayer(username, ip);
+    createPlayer(username, ip, true);
     createLobby(username, ip, function(code) {
       console.log("Code: " + code)
-      res.redirect("/game?username=" + username + "&lobbycode=" + code  + "&isHost=true");
+      res.redirect("/game?username=" + username + "&lobbycode=" + code);
     });
   }
 });
@@ -259,7 +259,17 @@ http.listen(3024 ,function(){
 
 ///////////////////////////////////////////////////Functions/////////////////////////////////////////
 
-
+function checkIsUserHost(username) {
+  var response = false;
+  for (var i = 0; i < playerList.length; i++) {
+    if (playerList[i].username === username){
+      if ((playerList[i]).isHost == true) {
+          response = true;
+      }
+    }
+  }
+  return response;
+}
 
 /////////////////////////////////////////////////Object Creation + Player adding//////////////////////////////////////////
 function checkUserExists(username) {
@@ -289,10 +299,11 @@ function checkLobbyExists(lobbycode) {
   return response;
 }
 
-function createPlayer(username, ip) {
+function createPlayer(username, ip, isHost) {
   var player = {
     username: username,
-    ip: ip
+    ip: ip,
+    isHost: isHost
   }
   playerList.push(player)
   console.log("Playerlist = " + playerList)
