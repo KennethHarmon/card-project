@@ -18,7 +18,6 @@
   "homepage": "https://github.com/KennethHarmon/card-project#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "cardcast-api": "^0.2.3",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "mongoose": "^5.9.6",
