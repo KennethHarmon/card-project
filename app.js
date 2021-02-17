@@ -5,110 +5,34 @@ var app = express();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var bodyParser = require("body-parser");
-const maindeck = require("./cards.json")
+const maindeck = require("./cards.json");
+const gameController  = require("./controllers/game.js");
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 
 ///////////////////////////////////////////Server Variables/////////////////////////////////////
-var playerList = [];
-var lobbyList = {};
+
 
 var masterDeck = maindeck;
 
 ////////////////////////////////////////////PAGE ROUTES////////////////////////////////////////
 
 //Serve index page
-app.get('/', function(req, res){
-  //var randomCards = getRandomCards(2,1);
-  //console.log("randomCards: " + randomCards)
-  res.render("index")
-});
+app.get('/', gameController.index);
 
 //Serve game page
-app.get("/game", function(req,res) {
-  console.log("Game get request");
-  console.log(req.query)
-  if(lobbyList[req.query.lobbycode]){
-    console.log("LOBBY EXISTS");
-    if(lobbyList[req.query.lobbycode].players.includes(req.query.username)){
-      console.log("and player is included");
-      console.log(lobbyList[req.query.lobbycode].players);
-      if(checkIsUserHost(req.query.username)  == true){
-        res.render("gameHost", {username: req.query.username, lobbycode: req.query.lobbycode});
-      }
-      else{
-        res.render("game", {username: req.query.username, lobbycode: req.query.lobbycode});
-      };
-    }
-    else{
-      res.redirect("/");
-    }
-  }
-  else {
-    res.redirect("/");
-  }
-})
+app.get("/game", gameController.game)
 
 //Join Game
-app.post("/game/join", function(req,res) {
-  var ip = req.header('x-forwarded-for') || req.socket.remoteAddress;
-  var username = req.body.username.trim().toLowerCase();
-  var gameCode = req.body.gameCode;
-
-  console.log(username, " is joining game: " + gameCode);
-
-  var lobbyExists = checkLobbyExists(gameCode);
-  var userDoesExist = checkUserExists(username);
-  var gameStarted = lobbyList[gameCode].gameStarted;
-
-  if (!userDoesExist && lobbyExists && !gameStarted) {
-    console.log("No user exists");
-    console.log("Lobby does exist");
-    createPlayer(username, ip, false);
-    addToLobby(username,gameCode);
-    res.redirect("/game?username=" + username + "&lobbycode=" + gameCode);
-  }
-  else if(!lobbyExists){
-    console.log("Lobby doesnt exist. Can't add user");
-    res.redirect("/");
-  }
-  else if(gameStarted){
-    console.log("Game Started, can't join.");
-    res.redirect("/");
-  }
-  else {
-    console.log("User already exists, can't join lobby");
-    res.redirect("/");
-  };
-});
+app.post("/game/join", gameController.join);
 
 //Create a new game
-app.post('/game/new', function(req, res){
-  var ip = req.header('x-forwarded-for') || req.socket.remoteAddress;
-  var username = req.body.username.toLowerCase();
-
-  var doesExist = checkUserExists(username);
-  if (doesExist) {
-    console.log("User already exists, can't create lobby")
-    res.redirect("/");
-  }
-  else {
-    console.log("No user exists")
-    createPlayer(username, ip, true);
-    createLobby(username, ip, function(code) {
-      console.log("Code: " + code)
-      res.redirect("/game?username=" + username + "&lobbycode=" + code);
-    });
-  }
-});
+app.post('/game/new', gameController.create);
 
 //Serve cards page
-app.get('/cards', function(req, res){
-  var cards = masterDeck;
-  res.render("cardview", {cards:cards})
-});
+app.get('/cards', gameController.cards);
 
 ////////////////////////////////////////////////SOCKET.IO SECTION/////////////////////////////////////////
 
@@ -256,96 +180,6 @@ app.get("*", function(req,res) {
 http.listen(3024 ,function(){
   console.log('listening on *:3024');
 });
-
-///////////////////////////////////////////////////Functions/////////////////////////////////////////
-
-function checkIsUserHost(username) {
-  var response = false;
-  for (var i = 0; i < playerList.length; i++) {
-    if (playerList[i].username === username){
-      if ((playerList[i]).isHost == true) {
-          response = true;
-      }
-    }
-  }
-  return response;
-}
-
-/////////////////////////////////////////////////Object Creation + Player adding//////////////////////////////////////////
-function checkUserExists(username) {
-  console.log("Checking user exists");
-  var response = false;
-  for (var i = 0; i < playerList.length; i++) {
-    console.log(playerList[i].username);
-    console.log(username);
-    if (playerList[i].username === username) {
-      response = true;
-      console.log("playerlist: " + playerList)
-    }
-  }
-  console.log("playerList " + playerList)
-  console.log("Response " + response)
-  return response
-}
-
-function checkLobbyExists(lobbycode) {
-  var response= false;
-  console.log(Object.keys(lobbyList))
-  for(let i = 0 ; i < Object.keys(lobbyList).length; i++) {
-    if(lobbyList[lobbycode]){
-      response = true;
-    }
-  }
-  return response;
-}
-
-function createPlayer(username, ip, isHost) {
-  var player = {
-    username: username,
-    ip: ip,
-    isHost: isHost
-  }
-  playerList.push(player)
-  console.log("Playerlist = " + playerList)
-}
-
-//Create a lobby object with given username and ip and store it in the database
-function createLobby(username, ip, callback) {
-  //Create a new lobby
-  generateLobbyCode(function(code) {
-
-    var newLobby = {
-        ServerName: username + "'s lobby",
-        players: [username],
-        hands: {},
-        handsInPlay : {},
-        gameStarted : false,
-        disconnects: 0,
-        restarts: 0
-    }
-    newLobby.hands[username] = [];
-    lobbyList[code] = newLobby;
-
-    console.log(lobbyList[code])
-    callback(code);
-  })
-};
-
-function addToLobby(username,gameCode) {
-  if (lobbyList[gameCode]) {
-    lobbyList[gameCode].players.push(username);
-    lobbyList[gameCode].hands[username] = [];
-    console.log("Current Lobby = " + lobbyList[gameCode].players);
-  }
-  else {
-    console.log("Lobby does not exitst");
-  }
-};
-
-function generateLobbyCode(callback) {
-  var code = Math.floor(100000 + Math.random() * 900000);
-  callback(code);
-};
 
 //////////////////////////////////////////////Game logic/////////////////////////////////////////////////////
 
