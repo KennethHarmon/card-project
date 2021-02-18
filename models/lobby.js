@@ -4,6 +4,16 @@ const Schema = mongoose.Schema;
 
 const LobbySchema = new Schema ({
     lobbyCode: Number,
+    scoreLimit: Number,
+    gameStarted: Boolean,
+    single: String,
+    restarts: Number,
+    disconnects: Number,
+    playerList: [String],
+    handsInPlay: {
+        type:Array,
+        "default": []
+    },
     players: [
         {
             type: Schema.Types.ObjectId,

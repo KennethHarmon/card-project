@@ -185,8 +185,8 @@
     function createPlayerDisplayHand(currentCardDisplay) {
         var holder = "<button id='back' class='btn btn-dark'><</button>";
         //Push cards into the display
-        for(let i = 0; i < handDisplay[playerList[currentCardDisplay]].length; i++) {
-            let currentCard = handDisplay[playerList[currentCardDisplay]][i];
+        for(let i = 0; i < handDisplay[0][0].length; i++) {
+            let currentCard = handDisplay[currentCardDisplay][playerList[currentCardDisplay]][i];
             if(currentCard){
                 var type = currentCard.type;
                 holder += "<div class = 'col-5 col-sm-3 col-lg-2 col-xl-1 game" + type + "card'>" + currentCard.text + "</div>";          
@@ -206,7 +206,10 @@
 
     //Populates the global player list
     function makePlayerList(hands) {
-        var players = Object.keys(hands);
+        let players= [];
+        hands.forEach(hand => {
+            playerList.push(Object.keys(hand));
+        });
         playerList = players;
     };
 
@@ -317,6 +320,7 @@
 
     //////////////////////////////////////////////////Socket Events////////////////////////////////////////////////
     socket.on("deck", (data) => {
+        console.log(data)
         displayHand(data);
     });
 
@@ -428,7 +432,7 @@
         $("#messages").scrollTop($('#messages').prop('scrollHeight'));
     });
 
-    socket.on("invalid lobby", (players) => {
+    socket.on("invalid lobby", () => {
         $('#messages').append('<li style="color:red">' + "<strong>Game: </strong>" + "ERROR, lobby is invalid, too few players, ending game." + "</li>");
         $("#messages").scrollTop($('#messages').prop('scrollHeight'));
         resetGame();
