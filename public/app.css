@@ -71,6 +71,11 @@ body {
     padding: 1% 1%
 }
 
+.hidden {
+    background-color: black;
+    color: rgba(0, 0, 0, 0);
+}
+
 .selectedcard {
     background: pink;
     margin-bottom: 10px;
